@@ -2,6 +2,8 @@
 
 Check if container images in a Kubernetes cluster have arm architecture support.
 
+https://github.com/Arm-Debug/armer/assets/32394735/f308bd5d-b19e-4e08-ae51-9f0f18ce8f6f
+
 ## Setup
 
 ### Install Skopeo
