@@ -2,7 +2,8 @@
 
 Check if container images in a Kubernetes cluster have arm architecture support.
 
-https://github.com/Arm-Debug/armer/assets/32394735/f308bd5d-b19e-4e08-ae51-9f0f18ce8f6f
+https://github.com/Arm-Debug/armer/assets/32394735/d89f6692-1e42-4790-8908-746a5cf9c7b6
+
 
 ## Setup
 
