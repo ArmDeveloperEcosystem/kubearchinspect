@@ -32,3 +32,9 @@ kubectl apply -f init/deployments.yaml
 ```shell
 ./armer.sh
 ```
+
+## Drawbacks
+
+- Does not support registries which require authentication (E.g., AWS ECR)
+- It can be slow in large clusters
+- Does not handle rate-limiting
