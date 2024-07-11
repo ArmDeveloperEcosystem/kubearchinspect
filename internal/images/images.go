@@ -10,10 +10,10 @@ import (
 	"github.com/containers/image/v5/types"
 )
 
-// Converts the provided image name to the full URL, if already not in that format.
+// ToFullURL converts the provided image name to the full URL, if already not in that format.
 // e.g. nginx becomes docker.io/library/nginx
 // If already in full URL format, image name is returned as is.
-func ToFullUrl(imgName string) string {
+func ToFullURL(imgName string) string {
 	splits := strings.Split(imgName, "/")
 	if len(splits) > 2 {
 		return imgName
@@ -24,6 +24,7 @@ func ToFullUrl(imgName string) string {
 	return fmt.Sprintf("docker.io/library/%s", imgName)
 }
 
+// CheckLinuxArm64Support checks for the existance of an arm64 linux image in the manifest
 func CheckLinuxArm64Support(imgName string) (bool, error) {
 	sys := &types.SystemContext{
 		ArchitectureChoice: "arm64",
@@ -51,6 +52,7 @@ func CheckLinuxArm64Support(imgName string) (bool, error) {
 		return false, err
 	}
 
+	// This call will error if it cannot find a instance that supports linux arm64
 	_, err = manifestList.ChooseInstance(sys)
 	return err == nil, nil
 }

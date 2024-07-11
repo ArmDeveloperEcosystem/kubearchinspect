@@ -35,7 +35,7 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 	fmt.Print("------------------------------------------------------------------------\n\n")
 	for _, image := range imageList {
 		var icon string
-		supportsArm, err := images.CheckLinuxArm64Support(images.ToFullUrl(image))
+		supportsArm, err := images.CheckLinuxArm64Support(images.ToFullURL(image))
 		if err != nil {
 			icon = warningIcon
 		} else if supportsArm {

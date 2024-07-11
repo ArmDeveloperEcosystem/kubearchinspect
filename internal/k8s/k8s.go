@@ -40,6 +40,7 @@ func NewKubernetesClient() (*KubernetesClient, error) {
 	}, nil
 }
 
+// GetAllPods returns all Pods in all namespaces in the cluster
 func (k *KubernetesClient) GetAllPods() ([]corev1.Pod, error) {
 	pods, err := k.clientset.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -48,6 +49,8 @@ func (k *KubernetesClient) GetAllPods() ([]corev1.Pod, error) {
 	return pods.Items, nil
 }
 
+// GetAllImages returns all unique images used by all current running Pods in the cluster
+// TODO: Get images from Deployments, CronJobs, etc which may not be running.
 func (k *KubernetesClient) GetAllImages() ([]string, error) {
 	pods, err := k.GetAllPods()
 	if err != nil {
