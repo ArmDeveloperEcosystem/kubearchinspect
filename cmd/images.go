@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	success = "\xE2\x9C\x85"
-	warning = "\xE2\x9D\x97"
-	failed  = "\xE2\x9D\x8C"
+	successIcon = "\xE2\x9C\x85"
+	failedIcon  = "\xE2\x9D\x97"
+	warningIcon = "\xE2\x9D\x8C"
 )
 
 var imagesCmd = &cobra.Command{
@@ -31,15 +31,17 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Printf("Legends:\n%s - Supports arm64, %s - Do not support arm64, %s - Some error occurred\n", successIcon, warningIcon, failedIcon)
+	fmt.Print("------------------------------------------------------------------------\n\n")
 	for _, image := range imageList {
 		var icon string
-		supportsArm, err := images.DoesSupportLinuxArm64(image)
+		supportsArm, err := images.CheckLinuxArm64Support(images.ToFullUrl(image))
 		if err != nil {
-			icon = warning
+			icon = warningIcon
 		} else if supportsArm {
-			icon = success
+			icon = successIcon
 		} else {
-			icon = failed
+			icon = failedIcon
 		}
 		fmt.Printf("%s %s\n", image, icon)
 	}

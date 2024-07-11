@@ -3,13 +3,28 @@ package images
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/containers/image/v5/manifest"
 	"github.com/containers/image/v5/transports/alltransports"
 	"github.com/containers/image/v5/types"
 )
 
-func DoesSupportLinuxArm64(imgName string) (bool, error) {
+// Converts the provided image name to the full URL, if already not in that format.
+// e.g. nginx becomes docker.io/library/nginx
+// If already in full URL format, image name is returned as is.
+func ToFullUrl(imgName string) string {
+	splits := strings.Split(imgName, "/")
+	if len(splits) > 2 {
+		return imgName
+	}
+	if len(splits) == 2 {
+		return fmt.Sprintf("docker.io/%s", imgName)
+	}
+	return fmt.Sprintf("docker.io/library/%s", imgName)
+}
+
+func CheckLinuxArm64Support(imgName string) (bool, error) {
 	sys := &types.SystemContext{
 		ArchitectureChoice: "arm64",
 		OSChoice:           "linux",
