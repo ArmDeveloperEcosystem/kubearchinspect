@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestToFullUrl(t *testing.T) {
+func TestToFullURL(t *testing.T) {
 	tests := map[string]struct {
 		input string
 		want  string
@@ -23,7 +23,7 @@ func TestToFullUrl(t *testing.T) {
 
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
-			got := images.ToFullUrl(tc.input)
+			got := images.ToFullURL(tc.input)
 			assert.Equal(t, tc.want, got)
 		})
 	}
