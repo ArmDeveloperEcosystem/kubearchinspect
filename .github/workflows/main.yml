@@ -18,7 +18,7 @@ jobs:
           go-version: "1.22.2"
 
       - name: Install depedencies
-        run: apt-get install libbtrfs-dev -y
+        run: sudo apt-get install libbtrfs-dev -y
 
       - name: Download Go Modules
         run: go mod download
