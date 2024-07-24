@@ -15,8 +15,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          # the version must be wrapped in single quote eg: ('1.9.5')
-          go-version: "1.22.0"
+          go-version: "1.22.2"
           cache-dependency-path: "**/*.sum"
 
       - name: Download Go Modules
