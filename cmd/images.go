@@ -11,8 +11,9 @@ import (
 
 const (
 	successIcon = "\xE2\x9C\x85"
-	failedIcon  = "\xE2\x9D\x97"
-	warningIcon = "\xE2\x9D\x8C"
+	warningIcon = "\xE2\x9D\x97"
+	failedIcon  = "\xE2\x9D\x8C"
+	upgradeIcon = "\xE2\xAC\x86"
 )
 
 var imagesCmd = &cobra.Command{
@@ -23,6 +24,11 @@ var imagesCmd = &cobra.Command{
 }
 
 func imagesCmdRun(cmd *cobra.Command, args []string) {
+	debug, err := cmd.Flags().GetBool("debug")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	k8sClient, err := k8s.NewKubernetesClient()
 	if err != nil {
 		log.Fatal(err)
@@ -31,17 +37,25 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Legends:\n%s - Supports arm64, %s - Do not support arm64, %s - Some error occurred\n", successIcon, warningIcon, failedIcon)
-	fmt.Print("------------------------------------------------------------------------\n\n")
+	fmt.Printf("Legends:\n%s - Supports arm64, %s - Does not support arm64, %s - Upgrade for arm64 support, %s - Some error occurred\n", successIcon, failedIcon, upgradeIcon, warningIcon)
+	fmt.Print("------------------------------------------------------------------------------------------------\n\n")
 	for _, image := range imageList {
 		var icon string
-		supportsArm, err := images.CheckLinuxArm64Support(images.ToFullURL(image))
+		supportsArm, err := images.CheckLinuxArm64Support(image)
 		if err != nil {
+			if debug {
+				fmt.Printf("error: %s\n", err)
+			}
 			icon = warningIcon
 		} else if supportsArm {
 			icon = successIcon
 		} else {
-			icon = failedIcon
+			latestSupportsArm, _ := images.CheckLatestLinuxArm64Support(image)
+			if latestSupportsArm {
+				icon = upgradeIcon
+			} else {
+				icon = failedIcon
+			}
 		}
 		fmt.Printf("%s %s\n", image, icon)
 	}
@@ -49,6 +63,8 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 
 func init() {
 	rootCmd.AddCommand(imagesCmd)
+
+	imagesCmd.Flags().BoolP("debug", "d", false, "Enable debug mode")
 
 	// Here you will define your flags and configuration settings.
 
