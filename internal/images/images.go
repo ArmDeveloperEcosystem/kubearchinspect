@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/containers/image/v5/manifest"
+	"github.com/containers/image/v5/image"
 	"github.com/containers/image/v5/transports/alltransports"
 	"github.com/containers/image/v5/types"
 )
@@ -33,38 +33,23 @@ func CheckLinuxArm64Support(imgName string) (bool, error) {
 		return false, fmt.Errorf("error parsing image name: %w", err)
 	}
 
-	imageSource, err := ref.NewImageSource(context.Background(), sys)
+	src, err := ref.NewImageSource(context.Background(), sys)
 	if err != nil {
 		return false, fmt.Errorf("error getting image source: %w", err)
 	}
-	defer imageSource.Close()
+	defer src.Close()
 
-	rawManifest, mimeType, err := imageSource.GetManifest(context.Background(), nil)
+	img, err := image.FromUnparsedImage(context.TODO(), sys, image.UnparsedInstance(src, nil))
 	if err != nil {
-		return false, fmt.Errorf("error getting manifest: %w", err)
+		return false, fmt.Errorf("error parsing manifest: %w", err)
 	}
 
-	if manifest.MIMETypeIsMultiImage(mimeType) {
-		manifestList, err := manifest.ListFromBlob(rawManifest, mimeType)
-		if err != nil {
-			return false, err
-		}
-
-		// This call will error if it cannot find a instance that supports linux arm64
-		_, err = manifestList.ChooseInstance(sys)
-		return err == nil, nil
-	} else {
-		// m, err := manifest.FromBlob(rawManifest, mimeType)
-		// if err != nil {
-		// 	return false, nil
-		// }
-		// mInfo, err := m.Inspect(nil)
-		// if err != nil {
-		// 	return false, nil
-		// }
-		// return mInfo.Architecture == "arm64", nil
-		return false, fmt.Errorf("image manifests not supported")
+	imgInspect, err := img.Inspect(context.TODO())
+	if err != nil {
+		return false, fmt.Errorf("error inspecting image: %w", err)
 	}
+
+	return imgInspect.Architecture == "arm64", nil
 }
 
 func CheckLatestLinuxArm64Support(imgName string) (bool, error) {
