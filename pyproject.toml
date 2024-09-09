@@ -1,0 +1,70 @@
+[ProjectConfig]
+MASTER_BRANCH = "main"
+PROJECT_NAME = "armer"
+PROJECT_ROOT = "."
+PROJECT_UUID = "576e054b-f0a7-4ae8-be5c-090de20ed0ca"
+NEWS_DIR = "changes/"
+RELEASE_BRANCH_PATTERN = "*"
+VERSION_FILE_PATH = "changes/version.properties"
+CHANGELOG_FILE_PATH = "CHANGELOG.md"
+PROGRAMMING_LANGUAGE = "go"
+
+AWS_BUCKET=""
+SOURCE_DIR = ""
+MODULE_TO_DOCUMENT = ""
+DOCUMENTATION_DEFAULT_OUTPUT_PATH = "./does-not-exist"
+DOCUMENTATION_PRODUCTION_OUTPUT_PATH = "./does-not-exist"
+
+[tool.towncrier]
+directory = "changes"
+filename = "CHANGELOG.md"
+title_format = false
+
+[[tool.towncrier.type]]
+directory = "major"
+name = "Major changes"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "feature"
+name = "Features"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "bugfix"
+name = "Bugfixes"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "doc"
+name = "Improved Documentation"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "removal"
+name = "Deprecations and Removals"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "misc"
+name = "Misc"
+showcontent = false
+
+[AutoVersionConfig]
+CONFIG_NAME = "DEFAULT"
+PRERELEASE_TOKEN = "beta"
+BUILD_TOKEN = "dev"
+TAG_TEMPLATE = "v{version}"
+targets = [ "changes/version.properties",]
+
+[AutoVersionConfig.key_aliases]
+VERSION = "VERSION_KEY"
+MAJOR = "major"
+MINOR = "minor"
+PATCH = "patch"
+COMMIT = "COMMIT"
+
+[AutoVersionConfig.trigger_patterns]
+major = "changes/*.major"
+minor = "changes/*.feature"
+patch = "changes/*.bugfix"
