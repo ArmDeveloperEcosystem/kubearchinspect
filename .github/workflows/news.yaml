@@ -1,0 +1,53 @@
+name: Check news
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  python-version: '3.10'
+  dependabot_user: "dependabot[bot]"
+
+permissions:
+    contents: read
+
+jobs:
+  # Check that a news file has been added to this branch when a PR is created
+  assert-news:
+    name: Assert news files
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Checkout with full history for to allow compare with base branch
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Towncrier is written in Python
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.python-version }}
+
+      - name: Check for dependabot user
+        if: github.event.pull_request.user.login == env.dependabot_user
+        run: |
+          echo "::warning:: Skipping news file check as this is a dependency update and not included in the release notes."
+
+      - name: Install CI tools
+        if: github.event.pull_request.user.login != env.dependabot_user
+        run: pip install towncrier
+
+      # Fetch the base branch for the pull request so that towncrier can compare the current branch with the base branch.
+      - name: Check for news fragments
+        if: github.event.pull_request.user.login != env.dependabot_user
+        run: |
+          git fetch --no-tags origin +refs/heads/${BASE_BRANCH}:refs/remotes/origin/${BASE_BRANCH}
+          python -m towncrier.check --compare-with origin/${BASE_BRANCH}
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+
+      - name: Report failure if needed
+        if: ${{ failure() }}
+        run: |
+          echo "::error:: A news fragment explaining the change must be present in a pull request."
