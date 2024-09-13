@@ -19,7 +19,7 @@ DOCUMENTATION_PRODUCTION_OUTPUT_PATH = "./does-not-exist"
 directory = "changes"
 filename = "CHANGELOG.md"
 title_format = false
-ignore = version.properties
+ignore = [ "version.properties" ]
 
 [[tool.towncrier.type]]
 directory = "major"
