@@ -1,14 +1,48 @@
 # KubeArchInspect
 
-Check if container images in a Kubernetes cluster have arm architecture support.
+![kubearchinspect logo](./assets/kubearchinspect_logo.webp | width=200)
+
+`kubearchinspect` is a utility to check if container images in a Kubernetes cluster have arm architecture support.
+
+![Build](https://github.com/Arm-Debug/kubearchinspect/actions/workflows/main.yaml/badge.svg)
+
+## Installation
+
+### From binary
+
+You can directly [download the kubearchinspect executable](https://github.com/Arm-Debug/kubearchinspect/releases).
+
+### Build manually
+
+Clone the repo and run:
+
+```sh
+go build
+```
 
 ## Running
 
-```shell
+```sh
+kubearchinspect images
+```
+
+or clone the repo and run:
+
+```sh
 go run . images
 ```
 
-It uses credential helper defined in `~/.docker/config.json` for authenticating with private registries.
+## Usage
+
+```md
+completion  : Generate the autocompletion script for the specified shell
+help        : Help about any command
+images      : Check which images in your cluster support arm64.
+```
+
+## Authentication
+
+`kubearchinspect` uses the credential helper defined in `~/.docker/config.json` for authenticating with private registries.
 
 ## Drawbacks
 
