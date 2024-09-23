@@ -4,6 +4,8 @@
 
 `kubearchinspect` is a utility to check if container images in a Kubernetes cluster have arm architecture support.
 
+[![Main CI/CD](https://github.com/Arm-Debug/kubearchinspect/actions/workflows/main.yml/badge.svg)](https://github.com/Arm-Debug/kubearchinspect/actions/workflows/main.yml)
+
 ## Installation
 
 ### From binary
