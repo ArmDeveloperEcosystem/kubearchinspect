@@ -23,7 +23,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "armer",
+	Use:   "kubearchinspect",
 	Short: "Check how ready your Kubernetes cluster is to run on Arm.",
 	Long:  `Check how ready your Kubernetes cluster is to run on Arm.`,
 }
@@ -40,7 +40,7 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.armer.yaml)")
+	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.kubearchinspect.yaml)")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.

@@ -1,4 +1,4 @@
-module github.com/Arm-Debug/armer
+module github.com/Arm-Debug/kubearchinspect
 
 go 1.22.2
 

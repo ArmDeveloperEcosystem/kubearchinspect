@@ -1,4 +1,4 @@
-# Armer
+# KubeArchInspect
 
 Check if container images in a Kubernetes cluster have arm architecture support.
 

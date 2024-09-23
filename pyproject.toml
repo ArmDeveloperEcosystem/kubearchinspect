@@ -1,6 +1,6 @@
 [ProjectConfig]
 MASTER_BRANCH = "main"
-PROJECT_NAME = "armer"
+PROJECT_NAME = "kubearchinspect"
 PROJECT_ROOT = "."
 PROJECT_UUID = "576e054b-f0a7-4ae8-be5c-090de20ed0ca"
 NEWS_DIR = "changes/"
