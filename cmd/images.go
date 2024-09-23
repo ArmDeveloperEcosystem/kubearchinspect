@@ -20,8 +20,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/Arm-Debug/armer/internal/images"
-	"github.com/Arm-Debug/armer/internal/k8s"
+	"github.com/Arm-Debug/kubearchinspect/internal/images"
+	"github.com/Arm-Debug/kubearchinspect/internal/k8s"
 	"github.com/spf13/cobra"
 )
 

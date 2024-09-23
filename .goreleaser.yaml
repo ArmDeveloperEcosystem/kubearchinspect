@@ -1,4 +1,4 @@
-# Goreleaser config for Armer
+# Goreleaser config for KubeArchInspect
 # Make sure to check the documentation at https://goreleaser.com
 
 # The lines below are called `modelines`. See `:help modeline`
