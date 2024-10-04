@@ -16,7 +16,7 @@ limitations under the License.
 
 package main
 
-import "github.com/Arm-Debug/kubearchinspect/cmd"
+import "github.com/ArmDeveloperEcosystem/kubearchinspect/cmd"
 
 func main() {
 	cmd.Execute()
