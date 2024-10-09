@@ -1,14 +1,8 @@
 
-No significant changes.
+kubearchinspect initial public release
 
 
 Features
 --------
 
 - Initial release (#13092024)
-
-
-Misc
-----
-
-- #5
