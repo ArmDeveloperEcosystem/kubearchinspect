@@ -30,7 +30,7 @@ const (
 	successIcon = "\xE2\x9C\x85"
 	errorIcon   = "\xF0\x9F\x9A\xAB"
 	failedIcon  = "\xE2\x9D\x8C"
-	upgradeIcon = "\xF0\x9F\x86\x996"
+	upgradeIcon = "\xF0\x9F\x86\x99"
 )
 
 var imagesCmd = &cobra.Command{
@@ -54,7 +54,7 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Legend:\n-------\n%s - arm64 supported%s - arm64 supported (with update)\n%s - arm64 not supported\n%s - error occurred\n", successIcon, upgradeIcon, failedIcon, errorIcon)
+	fmt.Printf("Legend:\n-------\n%s - arm64 supported\n%s - arm64 supported (with update)\n%s - arm64 not supported\n%s - error occurred\n", successIcon, upgradeIcon, failedIcon, errorIcon)
 	fmt.Print("------------------------------------------------------------------------------------------------\n\n")
 
 	sort.Strings(imageList)
