@@ -19,6 +19,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"sort"
 
 	"github.com/ArmDeveloperEcosystem/kubearchinspect/internal/images"
 	"github.com/ArmDeveloperEcosystem/kubearchinspect/internal/k8s"
@@ -27,9 +28,9 @@ import (
 
 const (
 	successIcon = "\xE2\x9C\x85"
-	warningIcon = "\xE2\x9D\x97"
+	errorIcon   = "\xF0\x9F\x9A\xAB"
 	failedIcon  = "\xE2\x9D\x8C"
-	upgradeIcon = "\xE2\xAC\x86"
+	upgradeIcon = "\xF0\x9F\x86\x99"
 )
 
 var imagesCmd = &cobra.Command{
@@ -53,8 +54,10 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Legends:\n%s - Supports arm64, %s - Does not support arm64, %s - Upgrade for arm64 support, %s - Some error occurred\n", successIcon, failedIcon, upgradeIcon, warningIcon)
+	fmt.Printf("Legend:\n-------\n%s - arm64 supported\n%s - arm64 supported (with update)\n%s - arm64 not supported\n%s - error occurred\n", successIcon, upgradeIcon, failedIcon, errorIcon)
 	fmt.Print("------------------------------------------------------------------------------------------------\n\n")
+
+	sort.Strings(imageList)
 	for _, image := range imageList {
 		var icon string
 		supportsArm, err := images.CheckLinuxArm64Support(image)
@@ -62,7 +65,7 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 			if debug {
 				fmt.Printf("error: %s\n", err)
 			}
-			icon = warningIcon
+			icon = errorIcon
 		} else if supportsArm {
 			icon = successIcon
 		} else {
@@ -73,7 +76,7 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 				icon = failedIcon
 			}
 		}
-		fmt.Printf("%s %s\n", image, icon)
+		fmt.Printf("%s %s\n", icon, image)
 	}
 }
 
