@@ -10,16 +10,17 @@ A news file should be added to this directory for each PR.
 
 On release of the action, the content of the file becomes part of the [change log](../CHANGELOG.md) and this directory is reset.
 
-## News Files
+### News Files
 
 News files serve a different purpose to commit messages, which are generally written to inform developers of the
-project. News files will form part of the release notes so should be written to target the consumer of the GitHub action.
+project. News files will form part of the release notes so should be written to target the consumer of the package or
+tool.
 
 - At least, one news file should be added for each Merge/Pull request to the directory `/changes`.
 - The text of the file should be a single line describing the change and/or impact to the user.
 - The filename of the news file should take the form `<number>.<extension>`, e.g, `20191231.feature` where:
-    - The number is either the issue number or, if no issue exists, the date in the form `YYYYMMDDHHMM`.
-    - The extension should indicate the type of change as described in the following table:
+  - The number is either the issue number or, if no issue exists, the date in the form `YYYYMMDDHHMM`.
+  - The extension should indicate the type of change as described in the following table:
 
 | Change Type                                                                                                             | Extension  | Version Impact  |
 |-------------------------------------------------------------------------------------------------------------------------|------------|-----------------|
