@@ -15,7 +15,7 @@ permissions:
 jobs:
   # Check that a news file has been added to this branch when a PR is created
   assert-news:
-    name: Assert news files
+    name: Assert news files (See CONTRIBUTING.md)
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -50,4 +50,4 @@ jobs:
       - name: Report failure if needed
         if: ${{ failure() }}
         run: |
-          echo "::error:: A news fragment explaining the change must be present in a pull request."
+          echo "::error:: News file missing (See CONTRIBUTING.md guide for details)."
