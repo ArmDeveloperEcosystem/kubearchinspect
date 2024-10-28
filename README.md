@@ -98,7 +98,29 @@ images      : Check which images in your cluster support arm64
 
 `kubearchinspect` uses the credential helper defined in `~/.docker/config.json` for authenticating with private registries.
 
-## Drawbacks
+## Releases
 
-- It can be slow in large clusters
-- Does not handle rate-limiting
+For release notes and a history of changes of all **production** releases, please see the following:
+
+- [Changelog](CHANGELOG.md)
+
+## Project Structure
+
+The follow described the major aspects of the project structure:
+
+- `cmd/` - Application command logic.
+- `internal/` - Go project source files.
+- `changes/` - Collection of news files for unreleased changes.
+- `assets/` - Project images.
+
+## Getting Help
+
+- For a list of known issues and possible workarounds, please see [Known Issues](KNOWN_ISSUES.md).
+- To raise a defect or enhancement please use [GitHub Issues](https://github.com/ArmDeveloperEcosystem/kubearchinspect/issues).
+
+## Contributing
+
+- We are committed to fostering a welcoming community, please see our
+  [Code of Conduct](CODE_OF_CONDUCT.md) for more information.
+- For ways to contribute to the project, please see the [Contributions Guidelines](CONTRIBUTING.md)
+- For a technical introduction into developing this package, please see the [Development Guide](DEVELOPMENT.md)
