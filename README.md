@@ -19,31 +19,32 @@ Pre-built binaries are available from the [releases page](https://github.com/Arm
 
 ## Running
 
-`kubearchinspect` will query the Kubernetes cluster in the current context.
+### Prerequsites
 
-**_NOTE:_** Kubernetes contexts can be shown using `kubectl config get-contexts` and set with `kubectl config set-context`.
+* `kubectl` - `kubearchinspect` must be executed on a client with `kubectl` installed and configured to connect
+  to the target Kubernetes cluster. If multiple clusters are configured, it will query the cluster in the current
+  default context.
+* `docker` client - The Docker credential store is used to authenticate to private registries, use [`docker login`](https://docs.docker.com/reference/cli/docker/login/) to add credentials.
 
-Using the pre-built binary:
-```console
-kubearchinspect images
-```
-## Usage
+### Usage
 
 ```console
 kubearchinspect [OPTIONS]
 ```
 
-## Options
+### Options
 
 * `images` : Check which images in your cluster support arm64
 * `completion` : Generate the autocompletion script for the specified shell
 * `help` : Help about any command
 
-## Example Output
+## Example
 
 Output from a small cluster in EKS:
 
-```
+```console
+% kubearchinspect images
+
 Legend:
 -------
 ✅ - arm64 supported
@@ -98,11 +99,12 @@ This could include:
 
 ## Private Registry Authentication
 
-When `kubearchinspect` discovers an image from a registry that requires authentication, it uses the credential helper defined in `~/.docker/config.json` to obtain the required credentials. This is the same as the `docker` command line.
+If `kubearchinspect` discovers an image from a registry that requires authentication, it uses the `docker` credential
+store located at `~/.docker/config.json` to obtain the required credentials.
 
 ## Releases
 
-For release notes and a history of changes of all **production** releases, please see the following:
+For release notes and a history of changes of all releases, please see the following:
 
 - [Changelog](CHANGELOG.md)
 
