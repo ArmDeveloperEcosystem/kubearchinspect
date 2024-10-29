@@ -15,7 +15,7 @@ This is Open Source Software and we appreciate contributions and feedback, pleas
 
 ## Installation
 
-You can directly download the `kubearchinspect` executable from the [releases page](https://github.com/ArmDeveloperEcosystem/kubearchinspect/releases).
+Pre-built binaries are available from the [releases page](https://github.com/ArmDeveloperEcosystem/kubearchinspect/releases), alternatively see the [Development Guide](DEVELOPMENT.md) for building locally.
 
 ## Running
 
