@@ -1,24 +1,21 @@
+<!--
+Copyright (C) 2024 Arm Limited or its affiliates and Contributors. All rights reserved.
+SPDX-License-Identifier: Apache-2.0
+-->
 # KubeArchInspect
 
-![kubearchinspect logo](./assets/kubearchinspect_logo-small.webp)
-
-`kubearchinspect` is a utility to check if container images in a Kubernetes cluster have arm architecture support.
-
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Main CI/CD](https://github.com/ArmDeveloperEcosystem/kubearchinspect/actions/workflows/main.yml/badge.svg)](https://github.com/ArmDeveloperEcosystem/kubearchinspect/actions/workflows/main.yml)
+
+## Overview
+
+Migrating your websites and services to run on Arm infrastructure can give multiple benefits in terms of cost and performance. The first phase in this process is to determine whether the container images in a Kubernetes cluster have Arm support, most do, but checking can be a manual and time consuming task. To make it easy we have developed the `kubearchinspect` tool which automates this process. If the version of one of your images lacks Arm support the tool will check for Arm architecture support in newer version and lets you know to update your image.
+
+This is an Open Source project and appreciate contributions and feedback, please see [Contributions Guidelines](CONTRIBUTING.md) for more information.
 
 ## Installation
 
-### From binary
-
-You can directly [download the kubearchinspect executable](https://github.com/ArmDeveloperEcosystem/kubearchinspect/releases).
-
-### Build manually
-
-Clone the repo and run:
-
-```sh
-go build
-```
+You can directly download the `kubearchinspect` executable from the [releases page](https://github.com/ArmDeveloperEcosystem/kubearchinspect/releases).
 
 ## Running
 
@@ -27,15 +24,20 @@ go build
 **_NOTE:_** Kubernetes contexts can be shown using `kubectl config get-contexts` and set with `kubectl config set-context`.
 
 Using the pre-built binary:
-```sh
+```console
 kubearchinspect images
 ```
+## Usage
 
-or clone the repo and run:
-
-```sh
-go run . images
+```console
+kubearchinspect [OPTIONS]
 ```
+
+## Options
+
+* `images` : Check which images in your cluster support arm64
+* `completion` : Generate the autocompletion script for the specified shell
+* `help` : Help about any command
 
 ## Example Output
 
@@ -86,17 +88,17 @@ Legend:
 ✅ registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.8.1
 ```
 
-## Usage
+### Errors in Output
 
-```md
-completion  : Generate the autocompletion script for the specified shell
-help        : Help about any command
-images      : Check which images in your cluster support arm64
-```
+At present the tool will show an error if it cannot connect to the repository for an image for any reason.
+This could include:
+* Authentication failure
+* Communication error
+* Image no longer available
 
 ## Private Registry Authentication
 
-`kubearchinspect` uses the credential helper defined in `~/.docker/config.json` for authenticating with private registries.
+When `kubearchinspect` discovers an image from a registry that requires authentication, it uses the credential helper defined in `~/.docker/config.json` to obtain the required credentials. This is the same as the `docker` command line.
 
 ## Releases
 
@@ -108,19 +110,18 @@ For release notes and a history of changes of all **production** releases, pleas
 
 The follow described the major aspects of the project structure:
 
-- `cmd/` - Application command logic.
-- `internal/` - Go project source files.
-- `changes/` - Collection of news files for unreleased changes.
-- `assets/` - Project images.
+* `cmd/` - Application command logic.
+* `internal/` - Go project source files.
+* `changes/` - Collection of news files for unreleased changes.
 
 ## Getting Help
 
-- For a list of known issues and possible workarounds, please see [Known Issues](KNOWN_ISSUES.md).
-- To raise a defect or enhancement please use [GitHub Issues](https://github.com/ArmDeveloperEcosystem/kubearchinspect/issues).
+* For a list of known issues and possible workarounds, please see [Known Issues](KNOWN_ISSUES.md).
+* To raise a defect or enhancement please use [GitHub Issues](https://github.com/ArmDeveloperEcosystem/kubearchinspect/issues).
 
 ## Contributing
 
-- We are committed to fostering a welcoming community, please see our
+* We are committed to fostering a welcoming community, please see our
   [Code of Conduct](CODE_OF_CONDUCT.md) for more information.
-- For ways to contribute to the project, please see the [Contributions Guidelines](CONTRIBUTING.md)
-- For a technical introduction into developing this package, please see the [Development Guide](DEVELOPMENT.md)
+* For ways to contribute to the project, please see the [Contributions Guidelines](CONTRIBUTING.md)
+* For a technical introduction into developing this package, please see the [Development Guide](DEVELOPMENT.md)
