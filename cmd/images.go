@@ -21,9 +21,10 @@ import (
 	"log"
 	"sort"
 
+	"github.com/spf13/cobra"
+
 	"github.com/ArmDeveloperEcosystem/kubearchinspect/internal/images"
 	"github.com/ArmDeveloperEcosystem/kubearchinspect/internal/k8s"
-	"github.com/spf13/cobra"
 )
 
 const (
