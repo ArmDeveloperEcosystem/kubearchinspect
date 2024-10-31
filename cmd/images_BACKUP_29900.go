@@ -43,7 +43,9 @@ var imagesCmd = &cobra.Command{
 	Run:   imagesCmdRun,
 }
 
+<<<<<<< HEAD
 func imagesCmdRun(_ *cobra.Command, _ []string) {
+=======
 func containsAnyOf(input string, suggestions []string) bool {
 	for _, suggestion := range suggestions {
 		if strings.Contains(input, suggestion) {
@@ -88,6 +90,7 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+>>>>>>> ed14b9f (Better errors and logging.)
 
 	k8sClient, err := k8s.NewKubernetesClient()
 	if err != nil {
@@ -110,6 +113,7 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 
 	sort.Strings(imageList)
 	for _, image := range imageList {
+<<<<<<< HEAD
 		var (
 			icon             string
 			supportsArm, err = images.CheckLinuxArm64Support(image)
@@ -122,6 +126,7 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 			}
 			icon = errorIcon
 		case supportsArm:
+=======
 		var icon string
 		supportsArm, err := images.CheckLinuxArm64Support(image)
 		if err != nil {
@@ -133,6 +138,7 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 				log.Println(icon, " image: ", image, "||", "error: ", err)
 			}
 		} else if supportsArm {
+>>>>>>> ed14b9f (Better errors and logging.)
 			icon = successIcon
 		default:
 			latestSupportsArm, _ := images.CheckLatestLinuxArm64Support(image)
@@ -143,14 +149,33 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 			}
 		}
 
+<<<<<<< HEAD
+		fmt.Printf("%s %s\n", icon, image)
+=======
 		if debug {
 			fmt.Printf("%s %s\n", icon, image)
 		} else {
 			fmt.Printf("%s %s %s\n", icon, image, getFriendlyErrorMessage(err))
 		}
+>>>>>>> ed14b9f (Better errors and logging.)
 	}
 }
 
 func init() {
 	rootCmd.AddCommand(imagesCmd)
+<<<<<<< HEAD
+=======
+
+	imagesCmd.Flags().BoolP("debug", "d", false, "Enable debug mode")
+	imagesCmd.Flags().StringP("logfile", "l", "", "log errors")
+	// Here you will define your flags and configuration settings.
+
+	// Cobra supports Persistent Flags which will work for this command
+	// and all subcommands, e.g.:
+	// imagesCmd.PersistentFlags().String("foo", "", "A help for foo")
+
+	// Cobra supports local flags which will only run when this command
+	// is called directly, e.g.:
+	// imagesCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+>>>>>>> ed14b9f (Better errors and logging.)
 }

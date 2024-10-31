@@ -19,9 +19,7 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"os"
 	"sort"
-	"strings"
 
 	"github.com/spf13/cobra"
 
@@ -44,50 +42,6 @@ var imagesCmd = &cobra.Command{
 }
 
 func imagesCmdRun(_ *cobra.Command, _ []string) {
-func containsAnyOf(input string, suggestions []string) bool {
-	for _, suggestion := range suggestions {
-		if strings.Contains(input, suggestion) {
-			return true
-		}
-	}
-	return false
-}
-
-func getFriendlyErrorMessage(err error) string {
-	if err == nil {
-		return ""
-	}
-
-	errorMessage := err.Error()
-	switch {
-	case containsAnyOf(errorMessage, []string{"authentication", "auth", "authorized"}):
-		return "|| Authentication required. Please check your Docker credentials and your permissions."
-	case containsAnyOf(errorMessage, []string{"no image found"}):
-		return "|| Image not found."
-	default:
-		return "|| An unknown error occurred. Please run with debug -d for more details."
-	}
-}
-
-func imagesCmdRun(cmd *cobra.Command, args []string) {
-	debug, err := cmd.Flags().GetBool("debug")
-	saveLog := cmd.Flags().Changed("logfile")
-
-	if saveLog {
-
-		path, err := cmd.Flags().GetString("logfile")
-		file, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
-
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		log.SetOutput(file)
-	}
-
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	k8sClient, err := k8s.NewKubernetesClient()
 	if err != nil {
@@ -122,17 +76,6 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 			}
 			icon = errorIcon
 		case supportsArm:
-		var icon string
-		supportsArm, err := images.CheckLinuxArm64Support(image)
-		if err != nil {
-			icon = errorIcon
-			if debug {
-				fmt.Printf("error: %s\n", err)
-			}
-			if saveLog {
-				log.Println(icon, " image: ", image, "||", "error: ", err)
-			}
-		} else if supportsArm {
 			icon = successIcon
 		default:
 			latestSupportsArm, _ := images.CheckLatestLinuxArm64Support(image)
@@ -143,11 +86,7 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 			}
 		}
 
-		if debug {
-			fmt.Printf("%s %s\n", icon, image)
-		} else {
-			fmt.Printf("%s %s %s\n", icon, image, getFriendlyErrorMessage(err))
-		}
+		fmt.Printf("%s %s\n", icon, image)
 	}
 }
 

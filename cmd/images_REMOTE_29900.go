@@ -23,10 +23,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/spf13/cobra"
-
 	"github.com/ArmDeveloperEcosystem/kubearchinspect/internal/images"
 	"github.com/ArmDeveloperEcosystem/kubearchinspect/internal/k8s"
+	"github.com/spf13/cobra"
 )
 
 const (
@@ -43,7 +42,6 @@ var imagesCmd = &cobra.Command{
 	Run:   imagesCmdRun,
 }
 
-func imagesCmdRun(_ *cobra.Command, _ []string) {
 func containsAnyOf(input string, suggestions []string) bool {
 	for _, suggestion := range suggestions {
 		if strings.Contains(input, suggestion) {
@@ -93,35 +91,15 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	imageList, err := k8sClient.GetAllImages()
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Printf(
-		"Legend:\n-------\n%s - arm64 supported\n%s - arm64 supported (with update)\n%s - arm64 not supported\n%s - error occurred\n%s",
-		successIcon,
-		upgradeIcon,
-		failedIcon,
-		errorIcon,
-		"------------------------------------------------------------------------------------------------\n\n",
-	)
+	fmt.Printf("Legend:\n-------\n%s - arm64 supported\n%s - arm64 supported (with update)\n%s - arm64 not supported\n%s - error occurred\n", successIcon, upgradeIcon, failedIcon, errorIcon)
+	fmt.Print("------------------------------------------------------------------------------------------------\n\n")
 
 	sort.Strings(imageList)
 	for _, image := range imageList {
-		var (
-			icon             string
-			supportsArm, err = images.CheckLinuxArm64Support(image)
-		)
-
-		switch {
-		case err != nil:
-			if debugEnabled {
-				fmt.Printf("error: %s\n", err)
-			}
-			icon = errorIcon
-		case supportsArm:
 		var icon string
 		supportsArm, err := images.CheckLinuxArm64Support(image)
 		if err != nil {
@@ -134,7 +112,7 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 			}
 		} else if supportsArm {
 			icon = successIcon
-		default:
+		} else {
 			latestSupportsArm, _ := images.CheckLatestLinuxArm64Support(image)
 			if latestSupportsArm {
 				icon = upgradeIcon
@@ -153,4 +131,16 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 
 func init() {
 	rootCmd.AddCommand(imagesCmd)
+
+	imagesCmd.Flags().BoolP("debug", "d", false, "Enable debug mode")
+	imagesCmd.Flags().StringP("logfile", "l", "", "log errors")
+	// Here you will define your flags and configuration settings.
+
+	// Cobra supports Persistent Flags which will work for this command
+	// and all subcommands, e.g.:
+	// imagesCmd.PersistentFlags().String("foo", "", "A help for foo")
+
+	// Cobra supports local flags which will only run when this command
+	// is called directly, e.g.:
+	// imagesCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

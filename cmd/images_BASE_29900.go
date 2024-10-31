@@ -19,14 +19,11 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"os"
 	"sort"
-	"strings"
-
-	"github.com/spf13/cobra"
 
 	"github.com/ArmDeveloperEcosystem/kubearchinspect/internal/images"
 	"github.com/ArmDeveloperEcosystem/kubearchinspect/internal/k8s"
+	"github.com/spf13/cobra"
 )
 
 const (
@@ -43,48 +40,8 @@ var imagesCmd = &cobra.Command{
 	Run:   imagesCmdRun,
 }
 
-func imagesCmdRun(_ *cobra.Command, _ []string) {
-func containsAnyOf(input string, suggestions []string) bool {
-	for _, suggestion := range suggestions {
-		if strings.Contains(input, suggestion) {
-			return true
-		}
-	}
-	return false
-}
-
-func getFriendlyErrorMessage(err error) string {
-	if err == nil {
-		return ""
-	}
-
-	errorMessage := err.Error()
-	switch {
-	case containsAnyOf(errorMessage, []string{"authentication", "auth", "authorized"}):
-		return "|| Authentication required. Please check your Docker credentials and your permissions."
-	case containsAnyOf(errorMessage, []string{"no image found"}):
-		return "|| Image not found."
-	default:
-		return "|| An unknown error occurred. Please run with debug -d for more details."
-	}
-}
-
 func imagesCmdRun(cmd *cobra.Command, args []string) {
 	debug, err := cmd.Flags().GetBool("debug")
-	saveLog := cmd.Flags().Changed("logfile")
-
-	if saveLog {
-
-		path, err := cmd.Flags().GetString("logfile")
-		file, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
-
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		log.SetOutput(file)
-	}
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -93,48 +50,25 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	imageList, err := k8sClient.GetAllImages()
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Printf(
-		"Legend:\n-------\n%s - arm64 supported\n%s - arm64 supported (with update)\n%s - arm64 not supported\n%s - error occurred\n%s",
-		successIcon,
-		upgradeIcon,
-		failedIcon,
-		errorIcon,
-		"------------------------------------------------------------------------------------------------\n\n",
-	)
+	fmt.Printf("Legend:\n-------\n%s - arm64 supported\n%s - arm64 supported (with update)\n%s - arm64 not supported\n%s - error occurred\n", successIcon, upgradeIcon, failedIcon, errorIcon)
+	fmt.Print("------------------------------------------------------------------------------------------------\n\n")
 
 	sort.Strings(imageList)
 	for _, image := range imageList {
-		var (
-			icon             string
-			supportsArm, err = images.CheckLinuxArm64Support(image)
-		)
-
-		switch {
-		case err != nil:
-			if debugEnabled {
-				fmt.Printf("error: %s\n", err)
-			}
-			icon = errorIcon
-		case supportsArm:
 		var icon string
 		supportsArm, err := images.CheckLinuxArm64Support(image)
 		if err != nil {
-			icon = errorIcon
 			if debug {
 				fmt.Printf("error: %s\n", err)
 			}
-			if saveLog {
-				log.Println(icon, " image: ", image, "||", "error: ", err)
-			}
+			icon = errorIcon
 		} else if supportsArm {
 			icon = successIcon
-		default:
+		} else {
 			latestSupportsArm, _ := images.CheckLatestLinuxArm64Support(image)
 			if latestSupportsArm {
 				icon = upgradeIcon
@@ -142,15 +76,22 @@ func imagesCmdRun(cmd *cobra.Command, args []string) {
 				icon = failedIcon
 			}
 		}
-
-		if debug {
-			fmt.Printf("%s %s\n", icon, image)
-		} else {
-			fmt.Printf("%s %s %s\n", icon, image, getFriendlyErrorMessage(err))
-		}
+		fmt.Printf("%s %s\n", icon, image)
 	}
 }
 
 func init() {
 	rootCmd.AddCommand(imagesCmd)
+
+	imagesCmd.Flags().BoolP("debug", "d", false, "Enable debug mode")
+
+	// Here you will define your flags and configuration settings.
+
+	// Cobra supports Persistent Flags which will work for this command
+	// and all subcommands, e.g.:
+	// imagesCmd.PersistentFlags().String("foo", "", "A help for foo")
+
+	// Cobra supports local flags which will only run when this command
+	// is called directly, e.g.:
+	// imagesCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
