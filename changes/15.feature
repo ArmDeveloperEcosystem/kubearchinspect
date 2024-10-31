@@ -1,1 +1,0 @@
-Sort images before displaying and improve readability of output.
