@@ -105,13 +105,13 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 
 		switch {
 		case err != nil:
+			icon = errorIcon
 			if debugEnabled {
 				fmt.Printf("error: %s\n", err)
 			}
 			if loggingEnabled {
 				log.Println(icon, " image: ", image, "||", "error: ", err)
 			}
-			icon = errorIcon
 		case supportsArm:
 			icon = successIcon
 		default:
