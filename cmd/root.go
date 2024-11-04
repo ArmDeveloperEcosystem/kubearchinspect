@@ -23,6 +23,7 @@ import (
 )
 
 var debugEnabled bool
+var loggingFile string
 
 var rootCmd = &cobra.Command{
 	Use:   "kubearchinspect",
@@ -39,4 +40,5 @@ func Execute() {
 
 func init() {
 	rootCmd.PersistentFlags().BoolVarP(&debugEnabled, "debug", "d", false, "Enable debug mode")
+	rootCmd.PersistentFlags().StringVarP(&loggingFile, "log", "l", "", "Enable logging")
 }
