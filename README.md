@@ -54,50 +54,39 @@ Legend:
 🚫 - error occurred
 ------------------------------------------------------------------------------------------------
 
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon-k8s-cni-init:v1.15.4-eksbuild.1
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon-k8s-cni:v1.15.4-eksbuild.1
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/amazon/aws-network-policy-agent:v1.0.6-eksbuild.1
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/aws-ebs-csi-driver:v1.26.0
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/coredns:v1.9.3-eksbuild.10
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-attacher:v4.4.2-eks-1-28-11
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-node-driver-registrar:v2.9.2-eks-1-28-11
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-provisioner:v3.6.2-eks-1-28-11
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-resizer:v1.9.2-eks-1-28-11
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-snapshotter:v6.3.2-eks-1-28-11
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/kube-proxy:v1.25.16-minimal-eksbuild.1
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/livenessprobe:v2.11.0-eks-1-28-11
-✅ amazon/aws-for-fluent-bit:2.10.0
-✅ amazon/cloudwatch-agent:1.247350.0b251780
-✅ busybox:1.31.1
-✅ curlimages/curl:7.85.0
-✅ docker.io/alpine:3.13
-✅ docker.io/bitnami/external-dns:0.14.0-debian-11-r2
-🆙 docker.io/bitnami/metrics-server:0.6.2-debian-11-r20
-🚫 dsgcore--docker.internal.aws.arm.com/jcaap:3.7
-✅ mirrors--internal.aws.arm.com/grafana/grafana:9.3.8
-✅ mirrors--internal.aws.arm.com/banzaicloud/vault-secrets-webhook:1.18.0
-🆙 quay.io/argoproj/argocd:v2.0.5
-✅ quay.io/kiwigrid/k8s-sidecar:1.22.0
-✅ quay.io/prometheus-operator/prometheus-config-reloader:v0.63.0
-✅ quay.io/prometheus-operator/prometheus-operator:v0.63.0
-✅ quay.io/prometheus/alertmanager:v0.25.0
-✅ quay.io/prometheus/blackbox-exporter:v0.24.0
-✅ quay.io/prometheus/node-exporter:v1.5.0
-✅ quay.io/prometheus/prometheus:v2.42.0
-✅ redis:6.2.4-alpine
-✅ registry.k8s.io/autoscaling/cluster-autoscaler:v1.25.3
-🚫 registry.k8s.io/ingress-nginx/controller:v1.9.4@sha256:5b161f051d017e55d358435f295f5e9a297e66158f136321d9b04520ec6c48a3
-✅ registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.8.1
+🚫 some.ecr.link.com/eks/csi-snapshotter:v1 || Authentication error.
+🚫 some.ecr.link.com/eks/kube-proxy:v1 || Authentication error.
+🚫 some.ecr.link.com/eks/livenessprobe:v1 || Authentication error.
+✅ amazon/aws-for-fluent-bit:1
+✅ amazon/cloudwatch-agent:1
+✅ busybox:1
+✅ curlimages/curl:1
+✅ docker.io/alpine:1
+✅ docker.io/bitnami/external-dns:1
+🆙 docker.io/bitnami/metrics-server:1
+🚫 some.mirror.link.com/jcaap:1 || Image not found.
+✅ mirrors--internal.aws.arm.com/grafana/grafana:1
+✅ mirrors--internal.aws.arm.com/banzaicloud/vault-secrets-webhook:1
+🆙 quay.io/argoproj/argocd:1
+✅ quay.io/kiwigrid/k8s-sidecar:1
+✅ quay.io/prometheus-operator/prometheus-config-reloader:1
+✅ quay.io/prometheus-operator/prometheus-operator:1
+✅ quay.io/prometheus/alertmanager:1
+✅ quay.io/prometheus/blackbox-exporter:1
+✅ quay.io/prometheus/node-exporter:1
+✅ quay.io/prometheus/prometheus:1
+✅ redis:1
+✅ registry.k8s.io/autoscaling/cluster-autoscaler:1
+✅ registry.k8s.io/kube-state-metrics/kube-state-metrics:1
 ```
 
 ### Errors in Output
 
-At present the tool will show an error if it cannot connect to the repository for an image for any reason.
-This could include:
+If there is an error checking an image the tool will display the 🚫 symbol and give a short description of the error at the end of the line. The current common errors are:
 
-- Authentication error
-- Communication error
-- Image not found
+- Authentication error. This usually means that you are missing your docker credentials or that you are denied access to the registry.
+- Communication error. Could mean that the URL host doesn't exist or that its down.
+- Image not found.
 - Unknown error, run in debug mode for more info -d
 
 ## Private Registry Authentication
