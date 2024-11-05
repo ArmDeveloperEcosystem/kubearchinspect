@@ -36,19 +36,6 @@ func getDockerConfigPath() string {
 	return filepath.Join(home, ".docker", "config.json")
 }
 
-func removeTagIfDigestExists(imgName string) string {
-	if strings.Contains(imgName, "@") {
-		parts := strings.Split(imgName, "@")
-		// Check if the first part contains a colon, indicating a tag
-		if strings.Contains(parts[0], ":") {
-			subParts := strings.Split(parts[0], ":")
-			// Reconstruct the image name without the tag
-			imgName = subParts[0] + "@" + parts[1]
-		}
-	}
-	return imgName
-}
-
 // CheckLinuxArm64Support checks for the existance of an arm64 linux image in the manifest
 func CheckLinuxArm64Support(imgName string) (bool, error) {
 	sys := &types.SystemContext{
@@ -84,11 +71,25 @@ func CheckLinuxArm64Support(imgName string) (bool, error) {
 	return imgInspect.Architecture == "arm64", nil
 }
 
-func CheckLatestLinuxArm64Support(imgName string) (bool, error) {
-	split := strings.Split(imgName, ":")
-	if len(split) < 2 {
-		return false, fmt.Errorf("invalid image name")
+func removeTagIfDigestExists(imgName string) string {
+	if strings.Contains(imgName, "@") {
+		parts := strings.Split(imgName, "@")
+		// Check if the first part contains a colon, indicating a tag
+		if strings.Contains(parts[0], ":") {
+			subParts := strings.Split(parts[0], ":")
+			// Reconstruct the image name without the tag
+			imgName = subParts[0] + "@" + parts[1]
+		}
 	}
-	latestImageName := split[0] + ":latest"
-	return CheckLinuxArm64Support(latestImageName)
+	return imgName
+}
+
+func GetLatestImage(imgName string) string {
+
+	// Remove everything after '@'
+	tag := strings.Split(imgName, "@")
+
+	// Remove the tag and append with latest
+	split := strings.Split(tag[0], ":")
+	return split[0] + ":latest"
 }

@@ -69,6 +69,7 @@ func getFriendlyErrorMessage(err error) string {
 		return "|| An unknown error occurred. Please run with debug -d for more details."
 	}
 }
+
 func imagesCmdRun(_ *cobra.Command, _ []string) {
 
 	k8sClient, err := k8s.NewKubernetesClient()
@@ -117,7 +118,8 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 		case supportsArm:
 			icon = successIcon
 		default:
-			latestSupportsArm, _ := images.CheckLatestLinuxArm64Support(image)
+			latestImage := images.GetLatestImage(image)
+			latestSupportsArm, _ := images.CheckLinuxArm64Support(latestImage)
 			if latestSupportsArm {
 				icon = upgradeIcon
 			} else {
