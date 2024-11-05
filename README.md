@@ -2,6 +2,7 @@
 Copyright (C) 2024 Arm Limited or its affiliates and Contributors. All rights reserved.
 SPDX-License-Identifier: Apache-2.0
 -->
+
 # KubeArchInspect
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -21,10 +22,10 @@ Pre-built binaries are available from the [releases page](https://github.com/Arm
 
 ### Prerequsites
 
-* `kubectl` - `kubearchinspect` must be executed on a client with `kubectl` installed and configured to connect
+- `kubectl` - `kubearchinspect` must be executed on a client with `kubectl` installed and configured to connect
   to the target Kubernetes cluster. If multiple clusters are configured, it will query the cluster in the current
   default context.
-* `docker` client - The Docker credential store is used to authenticate to private registries, use [`docker login`](https://docs.docker.com/reference/cli/docker/login/) to add credentials.
+- `docker` client - The Docker credential store is used to authenticate to private registries, use [`docker login`](https://docs.docker.com/reference/cli/docker/login/) to add credentials.
 
 ### Usage
 
@@ -34,9 +35,9 @@ kubearchinspect [OPTIONS]
 
 ### Options
 
-* `images` : Check which images in your cluster support arm64
-* `completion` : Generate the autocompletion script for the specified shell
-* `help` : Help about any command
+- `images` : Check which images in your cluster support arm64
+- `completion` : Generate the autocompletion script for the specified shell
+- `help` : Help about any command
 
 ## Example
 
@@ -93,9 +94,11 @@ Legend:
 
 At present the tool will show an error if it cannot connect to the repository for an image for any reason.
 This could include:
-* Authentication failure
-* Communication error
-* Image no longer available
+
+- Authentication error
+- Communication error
+- Image not found
+- Unknown error, run in debug mode for more info -d
 
 ## Private Registry Authentication
 
@@ -112,18 +115,18 @@ For release notes and a history of changes of all releases, please see the follo
 
 The follow described the major aspects of the project structure:
 
-* `cmd/` - Application command logic.
-* `internal/` - Go project source files.
-* `changes/` - Collection of news files for unreleased changes.
+- `cmd/` - Application command logic.
+- `internal/` - Go project source files.
+- `changes/` - Collection of news files for unreleased changes.
 
 ## Getting Help
 
-* For a list of known issues and possible workarounds, please see [Known Issues](KNOWN_ISSUES.md).
-* To raise a defect or enhancement please use [GitHub Issues](https://github.com/ArmDeveloperEcosystem/kubearchinspect/issues).
+- For a list of known issues and possible workarounds, please see [Known Issues](KNOWN_ISSUES.md).
+- To raise a defect or enhancement please use [GitHub Issues](https://github.com/ArmDeveloperEcosystem/kubearchinspect/issues).
 
 ## Contributing
 
-* We are committed to fostering a welcoming community, please see our
+- We are committed to fostering a welcoming community, please see our
   [Code of Conduct](CODE_OF_CONDUCT.md) for more information.
-* For ways to contribute to the project, please see the [Contributions Guidelines](CONTRIBUTING.md)
-* For a technical introduction into developing this package, please see the [Development Guide](DEVELOPMENT.md)
+- For ways to contribute to the project, please see the [Contributions Guidelines](CONTRIBUTING.md)
+- For a technical introduction into developing this package, please see the [Development Guide](DEVELOPMENT.md)

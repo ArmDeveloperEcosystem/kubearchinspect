@@ -60,9 +60,11 @@ func getFriendlyErrorMessage(err error) string {
 	errorMessage := err.Error()
 	switch {
 	case containsAnyOf(errorMessage, []string{"authentication", "auth", "authorized"}):
-		return "|| Authentication required. Please check your Docker credentials and your permissions."
+		return "|| Authentication error."
 	case containsAnyOf(errorMessage, []string{"no image found"}):
 		return "|| Image not found."
+	case containsAnyOf(errorMessage, []string{"no such host"}):
+		return "|| communication error, check your url host."
 	default:
 		return "|| An unknown error occurred. Please run with debug -d for more details."
 	}
