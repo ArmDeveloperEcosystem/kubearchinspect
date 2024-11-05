@@ -28,12 +28,39 @@ import (
 	"github.com/containers/image/v5/types"
 )
 
+func containsAnyOf(input string, suggestions []string) bool {
+	for _, suggestion := range suggestions {
+		if strings.Contains(input, suggestion) {
+			return true
+		}
+	}
+	return false
+}
+
 func getDockerConfigPath() string {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return ""
 	}
 	return filepath.Join(home, ".docker", "config.json")
+}
+
+func GetFriendlyErrorMessage(err error) string {
+	if err == nil {
+		return ""
+	}
+
+	errorMessage := err.Error()
+	switch {
+	case containsAnyOf(errorMessage, []string{"authentication", "auth", "authorized"}):
+		return "|| Authentication error."
+	case containsAnyOf(errorMessage, []string{"no image found"}):
+		return "|| Image not found."
+	case containsAnyOf(errorMessage, []string{"no such host"}):
+		return "|| communication error, check your url host."
+	default:
+		return "|| An unknown error occurred. Please run with debug -d for more details."
+	}
 }
 
 // CheckLinuxArm64Support checks for the existance of an arm64 linux image in the manifest

@@ -21,7 +21,6 @@ import (
 	"log"
 	"os"
 	"sort"
-	"strings"
 
 	"github.com/spf13/cobra"
 
@@ -41,33 +40,6 @@ var imagesCmd = &cobra.Command{
 	Short: "Check which images in your cluster support arm64.",
 	Long:  `Check which images in your cluster support arm64.`,
 	Run:   imagesCmdRun,
-}
-
-func containsAnyOf(input string, suggestions []string) bool {
-	for _, suggestion := range suggestions {
-		if strings.Contains(input, suggestion) {
-			return true
-		}
-	}
-	return false
-}
-
-func getFriendlyErrorMessage(err error) string {
-	if err == nil {
-		return ""
-	}
-
-	errorMessage := err.Error()
-	switch {
-	case containsAnyOf(errorMessage, []string{"authentication", "auth", "authorized"}):
-		return "|| Authentication error."
-	case containsAnyOf(errorMessage, []string{"no image found"}):
-		return "|| Image not found."
-	case containsAnyOf(errorMessage, []string{"no such host"}):
-		return "|| communication error, check your url host."
-	default:
-		return "|| An unknown error occurred. Please run with debug -d for more details."
-	}
 }
 
 func imagesCmdRun(_ *cobra.Command, _ []string) {
@@ -130,7 +102,7 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 		if debugEnabled {
 			fmt.Printf("%s %s\n", icon, image)
 		} else {
-			fmt.Printf("%s %s %s\n", icon, image, getFriendlyErrorMessage(err))
+			fmt.Printf("%s %s %s\n", icon, image, images.GetFriendlyErrorMessage(err))
 		}
 	}
 }
