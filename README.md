@@ -54,30 +54,30 @@ Legend:
 🚫 - error occurred
 ------------------------------------------------------------------------------------------------
 
-🚫 some.ecr.link.com/eks/csi-snapshotter:v1 || Authentication error.
-🚫 some.ecr.link.com/eks/kube-proxy:v1 || Authentication error.
-🚫 some.ecr.link.com/eks/livenessprobe:v1 || Authentication error.
-✅ amazon/aws-for-fluent-bit:1
-✅ amazon/cloudwatch-agent:1
-✅ busybox:1
-✅ curlimages/curl:1
-✅ docker.io/alpine:1
-✅ docker.io/bitnami/external-dns:1
-🆙 docker.io/bitnami/metrics-server:1
-🚫 some.mirror.link.com/jcaap:1 || Image not found.
-✅ mirrors--internal.aws.arm.com/grafana/grafana:1
-✅ mirrors--internal.aws.arm.com/banzaicloud/vault-secrets-webhook:1
-🆙 quay.io/argoproj/argocd:1
-✅ quay.io/kiwigrid/k8s-sidecar:1
-✅ quay.io/prometheus-operator/prometheus-config-reloader:1
-✅ quay.io/prometheus-operator/prometheus-operator:1
-✅ quay.io/prometheus/alertmanager:1
-✅ quay.io/prometheus/blackbox-exporter:1
-✅ quay.io/prometheus/node-exporter:1
-✅ quay.io/prometheus/prometheus:1
-✅ redis:1
-✅ registry.k8s.io/autoscaling/cluster-autoscaler:1
-✅ registry.k8s.io/kube-state-metrics/kube-state-metrics:1
+🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-snapshotter:v6.3.2-eks-1-28-11 || Authentication error.
+🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/kube-proxy:v1.25.16-minimal-eksbuild.1 || Authentication error.
+🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/livenessprobe:v2.11.0-eks-1-28-11 || Authentication error.
+✅ amazon/aws-for-fluent-bit:2.10.0
+✅ amazon/cloudwatch-agent:1.247350.0b251780
+✅ busybox:1.31.1
+✅ curlimages/curl:7.85.0
+✅ docker.io/alpine:3.13
+✅ docker.io/bitnami/external-dns:0.14.0-debian-11-r2
+🆙 docker.io/bitnami/metrics-server:0.6.2-debian-11-r20
+🚫 dsgcore--docker.internal.aws.arm.com/jcaap:3.7 || Image not found.
+✅ mirrors--internal.aws.arm.com/grafana/grafana:9.3.8
+✅ mirrors--internal.aws.arm.com/banzaicloud/vault-secrets-webhook:1.18.0
+🆙 quay.io/argoproj/argocd:v2.0.5
+✅ quay.io/kiwigrid/k8s-sidecar:1.22.0
+✅ quay.io/prometheus-operator/prometheus-config-reloader:v0.63.0
+✅ quay.io/prometheus-operator/prometheus-operator:v0.63.0
+✅ quay.io/prometheus/alertmanager:v0.25.0
+✅ quay.io/prometheus/blackbox-exporter:v0.24.0
+✅ quay.io/prometheus/node-exporter:v1.5.0
+✅ quay.io/prometheus/prometheus:v2.42.0
+✅ redis:6.2.4-alpine
+✅ registry.k8s.io/autoscaling/cluster-autoscaler:v1.25.3
+✅ registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.8.1
 ```
 
 ### Errors in Output
