@@ -82,12 +82,12 @@ Legend:
 
 ### Errors in Output
 
-If there is an error checking an image the tool will display the 🚫 symbol and give a short description of the error at the end of the line. The current common errors are:
+If there is an error whilst checking an image, the tool will display the 🚫 symbol and give a short description of the error at the end of the line. The current common errors are:
 
 - Authentication error. This usually means that you are missing your docker credentials or that you are denied access to the registry.
 - Communication error. Could mean that the URL host doesn't exist or that its down.
 - Image not found.
-- Unknown error, run in debug mode for more info -d
+- Unknown error, run in debug mode using the flag `-d` for more info
 
 ## Private Registry Authentication
 

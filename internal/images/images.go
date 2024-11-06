@@ -59,7 +59,7 @@ func GetFriendlyErrorMessage(err error) string {
 	case containsAnyOf(errorMessage, []string{"no such host"}):
 		return "|| communication error, check your url host."
 	default:
-		return "|| An unknown error occurred. Please run with debug -d for more details."
+		return "|| An unknown error occurred. Please run in debug mode using the flag '-d' for more details."
 	}
 }
 
