@@ -49,7 +49,7 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 		log.Fatal(err)
 	}
 
-	imageList, err := k8sClient.GetAllImages()
+	imageMap, err := k8sClient.GetAllImages()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -71,18 +71,24 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 		"------------------------------------------------------------------------------------------------\n\n",
 	)
 
-	sort.Strings(imageList)
-	for _, image := range imageList {
+	sortedImages := make([]string, 0, len(imageMap))
+	for image := range imageMap {
+		sortedImages = append(sortedImages, image)
+	}
+	sort.Strings(sortedImages)
+
+	for _, image := range sortedImages {
 		var (
 			icon             string
-			supportsArm, err = images.CheckLinuxArm64Support(image)
+			supportsArm, err = images.CheckLinuxArm64Support(image, imageMap[image])
 		)
 
 		switch {
 		case err != nil:
 			icon = errorIcon
 			if debugEnabled {
-				fmt.Printf("error: %s\n", err)
+				fmt.Printf("Error: %s\n", err)
+				fmt.Printf("Pods: %s\n", imageMap[image])
 			}
 			if loggingEnabled {
 				log.Println(icon, " image: ", image, "||", "error: ", err)
@@ -91,7 +97,7 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 			icon = successIcon
 		default:
 			latestImage := images.GetLatestImage(image)
-			latestSupportsArm, _ := images.CheckLinuxArm64Support(latestImage)
+			latestSupportsArm, _ := images.CheckLinuxArm64Support(latestImage, imageMap[image])
 			if latestSupportsArm {
 				icon = upgradeIcon
 			} else {
@@ -99,11 +105,7 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 			}
 		}
 
-		if debugEnabled {
-			fmt.Printf("%s %s\n", icon, image)
-		} else {
-			fmt.Printf("%s %s %s\n", icon, image, images.GetFriendlyErrorMessage(err))
-		}
+		fmt.Printf("%s %s %s\n", icon, image, images.GetFriendlyErrorMessage(err, imageMap[image]))
 	}
 }
 

@@ -45,7 +45,7 @@ func getDockerConfigPath() string {
 	return filepath.Join(home, ".docker", "config.json")
 }
 
-func GetFriendlyErrorMessage(err error) string {
+func GetFriendlyErrorMessage(err error, pods []string) string {
 	if err == nil {
 		return ""
 	}
@@ -54,8 +54,8 @@ func GetFriendlyErrorMessage(err error) string {
 	switch {
 	case containsAnyOf(errorMessage, []string{"authentication", "auth", "authorized"}):
 		return "|| Authentication error."
-	case containsAnyOf(errorMessage, []string{"no image found"}):
-		return "|| Image not found."
+	case containsAnyOf(errorMessage, []string{"no image found", "image not found"}):
+		return "|| Image not found. Some pods like `" + pods[0] + "` are using an image that no longer exists."
 	case containsAnyOf(errorMessage, []string{"no such host"}):
 		return "|| communication error, check your url host."
 	default:
@@ -64,7 +64,7 @@ func GetFriendlyErrorMessage(err error) string {
 }
 
 // CheckLinuxArm64Support checks for the existance of an arm64 linux image in the manifest
-func CheckLinuxArm64Support(imgName string) (bool, error) {
+func CheckLinuxArm64Support(imgName string, pods []string) (bool, error) {
 	sys := &types.SystemContext{
 		ArchitectureChoice:       "arm64",
 		OSChoice:                 "linux",
