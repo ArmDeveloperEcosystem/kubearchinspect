@@ -53,18 +53,18 @@ func GetFriendlyErrorMessage(err error, pods []string) string {
 	errorMessage := err.Error()
 	switch {
 	case containsAnyOf(errorMessage, []string{"authentication", "auth", "authorized"}):
-		return "|| Authentication error."
+		return " Authentication error. A private image could not be checked, check the docker credentials are present and up to date."
 	case containsAnyOf(errorMessage, []string{"no image found", "image not found"}):
-		return "|| Image not found. Some pods like `" + pods[0] + "` are using an image that no longer exists."
+		return " Image not found. Some pods like `" + pods[0] + "` are using an image that no longer exists."
 	case containsAnyOf(errorMessage, []string{"no such host"}):
-		return "|| communication error, check your url host."
+		return " communication error. Could not communication with the registry, make sure the registry host exists."
 	default:
-		return "|| An unknown error occurred. Please run in debug mode using the flag '-d' for more details."
+		return " An unknown error occurred. Please run in debug mode using the flag '-d' for more details."
 	}
 }
 
 // CheckLinuxArm64Support checks for the existance of an arm64 linux image in the manifest
-func CheckLinuxArm64Support(imgName string, pods []string) (bool, error) {
+func CheckLinuxArm64Support(imgName string) (bool, error) {
 	sys := &types.SystemContext{
 		ArchitectureChoice:       "arm64",
 		OSChoice:                 "linux",
@@ -99,6 +99,11 @@ func CheckLinuxArm64Support(imgName string, pods []string) (bool, error) {
 }
 
 func removeTagIfDigestExists(imgName string) string {
+	// check for empty string
+	if imgName == "" {
+		return imgName
+	}
+
 	if strings.Contains(imgName, "@") {
 		parts := strings.Split(imgName, "@")
 		// Check if the first part contains a colon, indicating a tag
@@ -113,10 +118,15 @@ func removeTagIfDigestExists(imgName string) string {
 
 func GetLatestImage(imgName string) string {
 
-	// Remove everything after '@'
-	tag := strings.Split(imgName, "@")
+	// check for empty string
+	if imgName == "" {
+		return imgName
+	}
 
-	// Remove the tag and append with latest
-	split := strings.Split(tag[0], ":")
-	return split[0] + ":latest"
+	// Remove everything after '@' or ':'
+	parts := strings.FieldsFunc(imgName, func(c rune) bool {
+		return c == '@' || c == ':'
+	})
+
+	return parts[0] + ":latest"
 }

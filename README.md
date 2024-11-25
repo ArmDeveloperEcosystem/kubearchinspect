@@ -84,16 +84,10 @@ Legend:
 
 If there is an error whilst checking an image, the tool will display the 🚫 symbol and give a short description of the error at the end of the line. The current common errors are:
 
-- Authentication error.
-- Communication error.
+- Authentication error. A private image could not be checked, check the docker credentials are present and up to date.
+- Communication error. Could not communication with the registry, make sure the registry host exists.
 - Image not found. Some pods like `example-pod` are using an image that no longer exists.
 - Unknown error, run in debug mode using the flag `-d` for more info
-
-Authentication errors usually mean something went wrong with docker credentials.
-Communication errors usually mean that the client cant reach the repository host
-Image not found errors happen when the image that is running in the cluster no longer exists in the registry.
-
-A more detailed error can be found when running the tool with the flag `-d`. It also shows you all the pods that use this image
 
 ## Private Registry Authentication
 

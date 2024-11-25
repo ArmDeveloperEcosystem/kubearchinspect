@@ -80,7 +80,7 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 	for _, image := range sortedImages {
 		var (
 			icon             string
-			supportsArm, err = images.CheckLinuxArm64Support(image, imageMap[image])
+			supportsArm, err = images.CheckLinuxArm64Support(image)
 		)
 
 		switch {
@@ -91,13 +91,13 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 				fmt.Printf("Pods: %s\n", imageMap[image])
 			}
 			if loggingEnabled {
-				log.Println(icon, " image: ", image, "||", "error: ", err)
+				log.Println(icon, " image: ", image, " error: ", err)
 			}
 		case supportsArm:
 			icon = successIcon
 		default:
 			latestImage := images.GetLatestImage(image)
-			latestSupportsArm, _ := images.CheckLinuxArm64Support(latestImage, imageMap[image])
+			latestSupportsArm, _ := images.CheckLinuxArm64Support(latestImage)
 			if latestSupportsArm {
 				icon = upgradeIcon
 			} else {

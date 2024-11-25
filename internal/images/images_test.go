@@ -22,7 +22,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_removeTagIfDigestExists(t *testing.T) {
+func TestRemoveTagIfDigestExists(t *testing.T) {
 
 	tests := []struct {
 		name    string
@@ -43,6 +43,16 @@ func Test_removeTagIfDigestExists(t *testing.T) {
 			name:    "Only tag exists",
 			imgName: "testingImage:latest",
 			want:    "testingImage:latest",
+		},
+		{
+			name:    "Empty string",
+			imgName: "",
+			want:    "",
+		},
+		{
+			name:    "No tag or digest",
+			imgName: "testingImage",
+			want:    "testingImage",
 		},
 	}
 
@@ -79,6 +89,11 @@ func TestGetLatestImage(t *testing.T) {
 			name:    "Image with a tag and digest",
 			imgName: "nginx:v2@sha256:1114555554555",
 			want:    "nginx:latest",
+		},
+		{
+			name:    "Empty string",
+			imgName: "",
+			want:    "",
 		},
 	}
 
