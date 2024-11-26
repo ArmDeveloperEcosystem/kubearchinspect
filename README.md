@@ -10,7 +10,7 @@ SPDX-License-Identifier: Apache-2.0
 
 ## Overview
 
-Migrating your websites and services to run on Arm infrastructure can bring benefits in cost savings and performance improvements. The first phase in migrating to Arm is to determine whether the container images in the Kubernetes cluster have support for the Arm architecture. It can be a manual and time consuming task to check compatibility. To make it easier we have developed the `kubearchinspect` tool which automates this process. The tool will check the metadata of your images for Arm architecture support and if the current version of the image lacks support, it will also check newer versions for compatibility so that you can easily upgrade.
+Migrating your websites and services to run on Arm infrastructure can bring benefits in cost savings and performance improvements. The first phase in migrating to Arm is to determine whether the container images in the Kubernetes cluster have support for the Arm architecture. It can be a manual and time consuming task to check compatibility. To make it easier we have developed the `kubearchinspect` tool which automates this process. The tool runs against the cluster using `kubectl` to check the metadata of your images for Arm architecture support and if the current version of the image lacks support, it will also check newer versions for compatibility so that you can easily upgrade.
 
 This is Open Source Software and we appreciate contributions and feedback, please see the [Contribution Guidelines](CONTRIBUTING.md) for more information.
 
@@ -54,9 +54,9 @@ Legend:
 🚫 - error occurred
 ------------------------------------------------------------------------------------------------
 
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-snapshotter:v6.3.2-eks-1-28-11 || Authentication error.
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/kube-proxy:v1.25.16-minimal-eksbuild.1 || Authentication error.
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/livenessprobe:v2.11.0-eks-1-28-11 || Authentication error.
+🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-snapshotter:v6.3.2-eks-1-28-11  Authentication error. A private image could not be checked, check the docker credentials are present and up to date.
+🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/kube-proxy:v1.25.16-minimal-eksbuild.1  Authentication error. A private image could not be checked, check the docker credentials are present and up to date.
+🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/livenessprobe:v2.11.0-eks-1-28-11  Authentication error. A private image could not be checked, check the docker credentials are present and up to date.
 ✅ amazon/aws-for-fluent-bit:2.10.0
 ✅ amazon/cloudwatch-agent:1.247350.0b251780
 ✅ busybox:1.31.1
@@ -64,7 +64,7 @@ Legend:
 ✅ docker.io/alpine:3.13
 ✅ docker.io/bitnami/external-dns:0.14.0-debian-11-r2
 🆙 docker.io/bitnami/metrics-server:0.6.2-debian-11-r20
-🚫 dsgcore--docker.internal.aws.arm.com/jcaap:3.7 || Image not found.
+🚫 dsgcore--docker.internal.aws.arm.com/jcaap:3.7  Image not found. Some pods like `jcap-replica-pod-2` are using an image that no longer exists.
 ✅ mirrors--internal.aws.arm.com/grafana/grafana:9.3.8
 ✅ mirrors--internal.aws.arm.com/banzaicloud/vault-secrets-webhook:1.18.0
 🆙 quay.io/argoproj/argocd:v2.0.5
