@@ -66,7 +66,7 @@ Legend:
 ✅ docker.io/alpine:3.13
 ✅ docker.io/bitnami/external-dns:0.14.0-debian-11-r2
 🆙 docker.io/bitnami/metrics-server:0.6.2-debian-11-r20
-🚫 dsgcore--docker.internal.aws.arm.com/jcaap:3.7  Image not found. Some pods like `jcap-replica-pod-2` are using an image that no longer exists.
+🚫 secret.repo.arm.com/jcaap:3.7  Image not found. Some pods like `jcap-replica-pod-2` are using an image that no longer exists.
 ✅ mirrors--internal.aws.arm.com/grafana/grafana:9.3.8
 ✅ mirrors--internal.aws.arm.com/banzaicloud/vault-secrets-webhook:1.18.0
 🆙 quay.io/argoproj/argocd:v2.0.5
