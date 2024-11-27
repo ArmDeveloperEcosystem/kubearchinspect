@@ -57,7 +57,7 @@ func GetFriendlyErrorMessage(err error, pods []string) string {
 	case containsAnyOf(errorMessage, []string{"no image found", "image not found"}):
 		return " Image not found. Some pods like `" + pods[0] + "` are using an image that no longer exists."
 	case containsAnyOf(errorMessage, []string{"no such host"}):
-		return " communication error. Could not communication with the registry, make sure the registry host exists."
+		return " Communication error. Unable to communicate with the registry, please ensure the registry host is available."
 	default:
 		return " An unknown error occurred. Please run in debug mode using the flag '-d' for more details."
 	}
