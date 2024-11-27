@@ -56,9 +56,9 @@ Legend:
 🚫 - error occurred
 ------------------------------------------------------------------------------------------------
 
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-snapshotter:v6.3.2-eks-1-28-11  Authentication error. A private image could not be checked, check the docker credentials are present and up to date.
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/kube-proxy:v1.25.16-minimal-eksbuild.1  Authentication error. A private image could not be checked, check the docker credentials are present and up to date.
-🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/livenessprobe:v2.11.0-eks-1-28-11  Authentication error. A private image could not be checked, check the docker credentials are present and up to date.
+🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/csi-snapshotter:v6.3.2-eks-1-28-11  Authentication Error. The private image could not be queried, check the docker credentials are present and correct.
+🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/kube-proxy:v1.25.16-minimal-eksbuild.1  Authentication Error. The private image could not be queried, check the docker credentials are present and correct.
+🚫 602401143452.dkr.ecr.eu-west-1.amazonaws.com/eks/livenessprobe:v2.11.0-eks-1-28-11  Authentication Error. The private image could not be queried, check the docker credentials are present and correct.
 ✅ amazon/aws-for-fluent-bit:2.10.0
 ✅ amazon/cloudwatch-agent:1.247350.0b251780
 ✅ busybox:1.31.1
@@ -86,8 +86,8 @@ Legend:
 
 If there is an error whilst checking an image, the tool will display the 🚫 symbol and give a short description of the error at the end of the line. The current common errors are:
 
-- Authentication error. A private image could not be checked, check the docker credentials are present and up to date.
-- Communication error. Could not communication with the registry, make sure the registry host exists.
+- Authentication Error. The private image could not be queried, check the docker credentials are present and correct.
+- Communication error. Unable to communication with the registry, please ensure the registry host is available.
 - Image not found. Some pods like `example-pod` are using an image that no longer exists.
 - Unknown error, run in debug mode using the flag `-d` for more info
 
