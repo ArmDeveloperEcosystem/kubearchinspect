@@ -53,7 +53,7 @@ func GetFriendlyErrorMessage(err error, pods []string) string {
 	errorMessage := err.Error()
 	switch {
 	case containsAnyOf(errorMessage, []string{"authentication", "auth", "authorized"}):
-		return " Authentication error. A private image could not be checked, check the docker credentials are present and up to date."
+		return " Authentication Error. The private image could not be queried, please check the docker credentials are present and correct."
 	case containsAnyOf(errorMessage, []string{"no image found", "image not found"}):
 		return " Image not found. Some pods like `" + pods[0] + "` are using an image that no longer exists."
 	case containsAnyOf(errorMessage, []string{"no such host"}):
