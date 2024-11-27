@@ -10,7 +10,9 @@ SPDX-License-Identifier: Apache-2.0
 
 ## Overview
 
-Migrating your websites and services to run on Arm infrastructure can bring benefits in cost savings and performance improvements. The first phase in migrating to Arm is to determine whether the container images in the Kubernetes cluster have support for the Arm architecture. It can be a manual and time consuming task to check compatibility. To make it easier we have developed the `kubearchinspect` tool which automates this process. The tool runs against the cluster using `kubectl` to check the metadata of your images for Arm architecture support and if the current version of the image lacks support, it will also check newer versions for compatibility so that you can easily upgrade.
+Migrating your websites and services to run on Arm infrastructure can bring benefits in cost savings and performance improvements. The first phase in migrating to Arm is to determine whether the container images in the Kubernetes cluster have support for the Arm architecture. It can be a manual and time consuming task to check compatibility. To make it easier we have developed the `kubearchinspect` tool which automates this process.
+
+The tool runs on a local client against the cluster to check the metadata of your images for Arm architecture support. If the current version of the image lacks support, it will also check newer versions for compatibility so that you can easily upgrade.
 
 This is Open Source Software and we appreciate contributions and feedback, please see the [Contribution Guidelines](CONTRIBUTING.md) for more information.
 
