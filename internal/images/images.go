@@ -55,7 +55,7 @@ func GetFriendlyErrorMessage(err error) string {
 	case containsAnyOf(errorMessage, []string{"authentication", "auth", "authorized"}):
 		return " Authentication Error. The private image could not be queried, please check the docker credentials are present and correct."
 	case containsAnyOf(errorMessage, []string{"no image found", "image not found"}):
-		return " Image not found. Some pods are using an image that no longer exists."
+		return " Image not found. One or more pods are using an image that no longer exists."
 	case containsAnyOf(errorMessage, []string{"no such host"}):
 		return " Communication error. Unable to communicate with the registry, please ensure the registry host is available."
 	default:
