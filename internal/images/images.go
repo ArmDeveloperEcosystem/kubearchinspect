@@ -45,7 +45,7 @@ func getDockerConfigPath() string {
 	return filepath.Join(home, ".docker", "config.json")
 }
 
-func GetFriendlyErrorMessage(err error, pods []string) string {
+func GetFriendlyErrorMessage(err error) string {
 	if err == nil {
 		return ""
 	}

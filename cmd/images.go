@@ -105,7 +105,7 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 			}
 		}
 
-		fmt.Printf("%s %s %s\n", icon, image, images.GetFriendlyErrorMessage(err, imageMap[image]))
+		fmt.Printf("%s %s %s\n", icon, image, images.GetFriendlyErrorMessage(err))
 	}
 }
 
