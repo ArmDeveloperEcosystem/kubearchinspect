@@ -88,7 +88,7 @@ If there is an error whilst checking an image, the tool will display the 🚫 sy
 
 - Authentication Error. The private image could not be queried, check the docker credentials are present and correct.
 - Communication error. Unable to communication with the registry, please ensure the registry host is available.
-- Image not found. Some pods like `example-pod` are using an image that no longer exists.
+- Image not found. Some pods are using an image that no longer exists.
 - Unknown error, run in debug mode using the flag `-d` for more info
 
 ## Private Registry Authentication
