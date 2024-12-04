@@ -71,42 +71,60 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 		"------------------------------------------------------------------------------------------------\n\n",
 	)
 
-	sortedImages := make([]string, 0, len(imageMap))
+	type result struct {
+		image string
+		icon  string
+		err   error
+	}
+
+	results := make(chan result, len(imageMap))
+
 	for image := range imageMap {
-		sortedImages = append(sortedImages, image)
+		go func(image string) {
+			var (
+				icon             string
+				supportsArm, err = images.CheckLinuxArm64Support(image)
+			)
+
+			switch {
+			case err != nil:
+				icon = errorIcon
+			case supportsArm:
+				icon = successIcon
+			default:
+				latestImage := images.GetLatestImage(image)
+				latestSupportsArm, _ := images.CheckLinuxArm64Support(latestImage)
+				if latestSupportsArm {
+					icon = upgradeIcon
+				} else {
+					icon = failedIcon
+				}
+			}
+
+			results <- result{image: image, icon: icon, err: err}
+		}(image)
 	}
-	sort.Strings(sortedImages)
 
-	for _, image := range sortedImages {
-		var (
-			icon             string
-			supportsArm, err = images.CheckLinuxArm64Support(image)
-		)
+	var resultList []result
+	for range imageMap {
+		resultList = append(resultList, <-results)
+	}
 
-		switch {
-		case err != nil:
-			icon = errorIcon
-			if debugEnabled {
-				fmt.Printf("Error: %s\n", err)
-				fmt.Printf("Pods: %s\n", imageMap[image])
-			}
-			if loggingEnabled {
-				log.Println(icon, " image: ", image, " error: ", err)
-			}
-		case supportsArm:
-			icon = successIcon
-		default:
-			latestImage := images.GetLatestImage(image)
-			latestSupportsArm, _ := images.CheckLinuxArm64Support(latestImage)
-			if latestSupportsArm {
-				icon = upgradeIcon
-			} else {
-				icon = failedIcon
-			}
+	sort.Slice(resultList, func(i, j int) bool {
+		return resultList[i].image < resultList[j].image
+	})
+
+	for _, res := range resultList {
+		fmt.Printf("%s %s %s\n", res.icon, res.image, images.GetFriendlyErrorMessage(res.err))
+		if res.err != nil && debugEnabled {
+			fmt.Printf("Error: %s\n", res.err)
+			fmt.Printf("Pods: %s\n", imageMap[res.image])
 		}
-
-		fmt.Printf("%s %s %s\n", icon, image, images.GetFriendlyErrorMessage(err))
+		if res.err != nil && loggingEnabled {
+			log.Println(res.icon, " image: ", res.image, " error: ", res.err, "\n", imageMap[res.image])
+		}
 	}
+
 }
 
 func init() {
