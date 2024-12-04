@@ -2,6 +2,19 @@
 Features
 --------
 
+- Added better error messages for common cases, and added a new `-l` flag for logging into a log file. (#19)
+- ✨ made the image checks run in parallel (#202412041140)
+
+
+Misc
+----
+
+- #20241029
+
+
+Features
+--------
+
 - Sort images before displaying and improve readability of output. (#15)
 
 
