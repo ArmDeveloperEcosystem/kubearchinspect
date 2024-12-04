@@ -19,6 +19,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"os"
 	"sort"
 
 	"github.com/spf13/cobra"
@@ -48,9 +49,17 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 		log.Fatal(err)
 	}
 
-	imageList, err := k8sClient.GetAllImages()
+	imageMap, err := k8sClient.GetAllImages()
 	if err != nil {
 		log.Fatal(err)
+	}
+	var loggingEnabled = len(loggingFile) > 0
+	if loggingEnabled {
+		file, err := os.OpenFile(loggingFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.SetOutput(file)
 	}
 
 	fmt.Printf(
@@ -62,8 +71,13 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 		"------------------------------------------------------------------------------------------------\n\n",
 	)
 
-	sort.Strings(imageList)
-	for _, image := range imageList {
+	sortedImages := make([]string, 0, len(imageMap))
+	for image := range imageMap {
+		sortedImages = append(sortedImages, image)
+	}
+	sort.Strings(sortedImages)
+
+	for _, image := range sortedImages {
 		var (
 			icon             string
 			supportsArm, err = images.CheckLinuxArm64Support(image)
@@ -71,14 +85,19 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 
 		switch {
 		case err != nil:
-			if debugEnabled {
-				fmt.Printf("error: %s\n", err)
-			}
 			icon = errorIcon
+			if debugEnabled {
+				fmt.Printf("Error: %s\n", err)
+				fmt.Printf("Pods: %s\n", imageMap[image])
+			}
+			if loggingEnabled {
+				log.Println(icon, " image: ", image, " error: ", err)
+			}
 		case supportsArm:
 			icon = successIcon
 		default:
-			latestSupportsArm, _ := images.CheckLatestLinuxArm64Support(image)
+			latestImage := images.GetLatestImage(image)
+			latestSupportsArm, _ := images.CheckLinuxArm64Support(latestImage)
 			if latestSupportsArm {
 				icon = upgradeIcon
 			} else {
@@ -86,7 +105,7 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 			}
 		}
 
-		fmt.Printf("%s %s\n", icon, image)
+		fmt.Printf("%s %s %s\n", icon, image, images.GetFriendlyErrorMessage(err))
 	}
 }
 

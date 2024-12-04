@@ -28,12 +28,39 @@ import (
 	"github.com/containers/image/v5/types"
 )
 
+func containsAnyOf(input string, suggestions []string) bool {
+	for _, suggestion := range suggestions {
+		if strings.Contains(input, suggestion) {
+			return true
+		}
+	}
+	return false
+}
+
 func getDockerConfigPath() string {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return ""
 	}
 	return filepath.Join(home, ".docker", "config.json")
+}
+
+func GetFriendlyErrorMessage(err error) string {
+	if err == nil {
+		return ""
+	}
+
+	errorMessage := err.Error()
+	switch {
+	case containsAnyOf(errorMessage, []string{"authentication", "auth", "authorized"}):
+		return " Authentication Error. The private image could not be queried, please check the docker credentials are present and correct."
+	case containsAnyOf(errorMessage, []string{"no image found", "image not found"}):
+		return " Image not found. One or more pods are using an image that no longer exists."
+	case containsAnyOf(errorMessage, []string{"no such host"}):
+		return " Communication error. Unable to communicate with the registry, please ensure the registry host is available."
+	default:
+		return " An unknown error occurred. Please run in debug mode using the flag '-d' for more details."
+	}
 }
 
 // CheckLinuxArm64Support checks for the existance of an arm64 linux image in the manifest
@@ -43,6 +70,9 @@ func CheckLinuxArm64Support(imgName string) (bool, error) {
 		OSChoice:                 "linux",
 		DockerCompatAuthFilePath: getDockerConfigPath(),
 	}
+
+	// Docker references with both a tag and digest are currently not supported
+	imgName = removeTagIfDigestExists(imgName)
 
 	ref, err := alltransports.ParseImageName(fmt.Sprintf("docker://%s", imgName))
 	if err != nil {
@@ -68,11 +98,35 @@ func CheckLinuxArm64Support(imgName string) (bool, error) {
 	return imgInspect.Architecture == "arm64", nil
 }
 
-func CheckLatestLinuxArm64Support(imgName string) (bool, error) {
-	split := strings.Split(imgName, ":")
-	if len(split) < 2 {
-		return false, fmt.Errorf("invalid image name")
+func removeTagIfDigestExists(imgName string) string {
+	// check for empty string
+	if imgName == "" {
+		return imgName
 	}
-	latestImageName := split[0] + ":latest"
-	return CheckLinuxArm64Support(latestImageName)
+
+	if strings.Contains(imgName, "@") {
+		parts := strings.Split(imgName, "@")
+		// Check if the first part contains a colon, indicating a tag
+		if strings.Contains(parts[0], ":") {
+			subParts := strings.Split(parts[0], ":")
+			// Reconstruct the image name without the tag
+			imgName = subParts[0] + "@" + parts[1]
+		}
+	}
+	return imgName
+}
+
+func GetLatestImage(imgName string) string {
+
+	// check for empty string
+	if imgName == "" {
+		return imgName
+	}
+
+	// Remove everything after '@' or ':'
+	parts := strings.FieldsFunc(imgName, func(c rune) bool {
+		return c == '@' || c == ':'
+	})
+
+	return parts[0] + ":latest"
 }

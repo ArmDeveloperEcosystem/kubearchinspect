@@ -67,29 +67,21 @@ func (k *KubernetesClient) GetAllPods() ([]corev1.Pod, error) {
 
 // GetAllImages returns all unique images used by all current running Pods in the cluster
 // TODO: Get images from Deployments, CronJobs, etc which may not be running.
-func (k *KubernetesClient) GetAllImages() ([]string, error) {
+func (k *KubernetesClient) GetAllImages() (map[string][]string, error) {
 	pods, err := k.GetAllPods()
 	if err != nil {
 		return nil, err
 	}
 
-	imageSet := make(map[string]struct{})
+	imageMap := make(map[string][]string)
 	for _, pod := range pods {
 		for _, container := range pod.Spec.InitContainers {
-			if _, found := imageSet[container.Image]; !found {
-				imageSet[container.Image] = struct{}{}
-			}
+			imageMap[container.Image] = append(imageMap[container.Image], pod.Name)
 		}
 		for _, container := range pod.Spec.Containers {
-			if _, found := imageSet[container.Image]; !found {
-				imageSet[container.Image] = struct{}{}
-			}
+			imageMap[container.Image] = append(imageMap[container.Image], pod.Name)
 		}
 	}
 
-	images := make([]string, 0, len(imageSet))
-	for image := range imageSet {
-		images = append(images, image)
-	}
-	return images, nil
+	return imageMap, nil
 }
