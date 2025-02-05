@@ -18,6 +18,7 @@ package k8s
 
 import (
 	"context"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -31,21 +32,46 @@ type KubernetesClient struct {
 	clientset kubernetes.Clientset
 }
 
-func NewKubernetesClient() (*KubernetesClient, error) {
-	// TODO: allow user to provide their own kubeconfig location
-	home, err := os.UserHomeDir()
+func NewKubernetesClient(kubeconfigPath, context string, debug bool) (*KubernetesClient, error) {
+	// Check if user provided the kubeconfig location
+	if kubeconfigPath == "" {
+		// Try the kubeconfig in the default location
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return nil, err
+		}
+
+		kubeconfigPath = filepath.Join(home, ".kube", "config")
+	}
+
+	configOverrides := &clientcmd.ConfigOverrides{}
+	if context != "" {
+		configOverrides.CurrentContext = context
+	}
+
+	// Build the configuration from the kubeconfig file and overrides
+	config, err := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
+		&clientcmd.ClientConfigLoadingRules{ExplicitPath: kubeconfigPath},
+		configOverrides,
+	).ClientConfig()
 	if err != nil {
 		return nil, err
 	}
-	kubeconfig := filepath.Join(home, ".kube", "config")
 
-	// use the current context in kubeconfig
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
-	if err != nil {
-		return nil, err
+	// Log the context being used
+	if debug {
+		log.Println("Using the kube config file at", kubeconfigPath)
+		if context == "" {
+			rawConfig, err := clientcmd.LoadFromFile(kubeconfigPath)
+			if err != nil {
+				return nil, err
+			}
+			context = rawConfig.CurrentContext
+		}
+		log.Println("Running the command against context:", context)
 	}
 
-	// create the clientset
+	// Create the clientset
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		return nil, err

@@ -39,6 +39,7 @@ func Execute() {
 }
 
 func init() {
+	// Add flags
 	rootCmd.PersistentFlags().BoolVarP(&debugEnabled, "debug", "d", false, "Enable debug mode")
 	rootCmd.PersistentFlags().StringVarP(&loggingFile, "log", "l", "", "Enable logging")
 }

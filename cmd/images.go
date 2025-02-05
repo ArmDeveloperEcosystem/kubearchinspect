@@ -35,16 +35,32 @@ const (
 	upgradeIcon = "\xF0\x9F\x86\x99"
 )
 
-var imagesCmd = &cobra.Command{
-	Use:   "images",
-	Short: "Check which images in your cluster support arm64.",
-	Long:  `Check which images in your cluster support arm64.`,
-	Run:   imagesCmdRun,
-}
+var (
+	kubeConfigPath string
+	kubeContext    string
+
+	imagesCmd = &cobra.Command{
+		Use:   "images",
+		Short: "Check which images in your cluster support arm64.",
+		Long:  `Check which images in your cluster support arm64.`,
+		Run:   imagesCmdRun,
+	}
+)
 
 func imagesCmdRun(_ *cobra.Command, _ []string) {
 
-	k8sClient, err := k8s.NewKubernetesClient()
+	var loggingEnabled = len(loggingFile) > 0
+
+	if loggingEnabled {
+		file, err := os.OpenFile(loggingFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		log.SetOutput(file)
+	}
+
+	k8sClient, err := k8s.NewKubernetesClient(kubeConfigPath, kubeContext, debugEnabled)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -52,14 +68,6 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 	imageMap, err := k8sClient.GetAllImages()
 	if err != nil {
 		log.Fatal(err)
-	}
-	var loggingEnabled = len(loggingFile) > 0
-	if loggingEnabled {
-		file, err := os.OpenFile(loggingFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
-		if err != nil {
-			log.Fatal(err)
-		}
-		log.SetOutput(file)
 	}
 
 	fmt.Printf(
@@ -129,4 +137,8 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 
 func init() {
 	rootCmd.AddCommand(imagesCmd)
+
+	// Add flags
+	imagesCmd.PersistentFlags().StringVarP(&kubeConfigPath, "kube-config-path", "c", "", "Path to your Kube config file. (Default: '~/.kube/config')")
+	imagesCmd.PersistentFlags().StringVarP(&kubeContext, "kube-context", "", "", "The Kubernetes context to be used. (Default: Current context in the config)")
 }
