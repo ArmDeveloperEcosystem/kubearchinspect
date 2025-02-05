@@ -1,1 +1,0 @@
-Allow to run the application against a given Kube config and K8S context

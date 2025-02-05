@@ -2,6 +2,18 @@
 Features
 --------
 
+- Allow to run the application against a given Kube config and K8S context (#24)
+
+
+Misc
+----
+
+- #22
+
+
+Features
+--------
+
 - Added better error messages for common cases, and added a new `-l` flag for logging into a log file. (#19)
 - ✨ made the image checks run in parallel (#202412041140)
 
