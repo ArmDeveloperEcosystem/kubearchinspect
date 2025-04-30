@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 env:
-  go-version: '1.22.2'
-  python-version: '3.10'
+  go-version: "1.24.2"
+  python-version: "3.10"
 
 jobs:
   # News file based version calculation
@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-
       - uses: tibdex/github-app-token@v2
         id: get_installation_token
         with:
@@ -62,7 +61,7 @@ jobs:
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: '~> v2'
+          version: "~> v2"
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

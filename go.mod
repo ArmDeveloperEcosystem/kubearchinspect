@@ -1,7 +1,6 @@
 module github.com/ArmDeveloperEcosystem/kubearchinspect
 
-go 1.22.2
-toolchain go1.24.1
+go 1.24
 
 require (
 	github.com/containers/image/v5 v5.31.1

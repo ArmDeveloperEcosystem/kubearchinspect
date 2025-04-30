@@ -6,11 +6,11 @@ on:
       - main
 
 env:
-  python-version: '3.10'
+  python-version: "3.10"
   dependabot_user: "dependabot[bot]"
 
 permissions:
-    contents: read
+  contents: read
 
 jobs:
   # Check that a news file has been added to this branch when a PR is created
