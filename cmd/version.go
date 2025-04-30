@@ -39,8 +39,8 @@ var (
 
 	versionCmd = &cobra.Command{
 		Use:   "version",
-		Short: "Check the version of KubeArchInspect you are running.",
-		Long:  `Check the version of KubeArchInspect you are running.`,
+		Short: "Check the version of KubeArchInspect you are running",
+		Long:  `Check the version of KubeArchInspect you are running`,
 		Run:   versionCmdRun,
 	}
 )

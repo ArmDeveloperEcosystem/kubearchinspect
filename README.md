@@ -1,5 +1,5 @@
 <!--
-Copyright (C) 2024 Arm Limited or its affiliates and Contributors. All rights reserved.
+Copyright (C) 2025 Arm Limited or its affiliates and Contributors. All rights reserved.
 SPDX-License-Identifier: Apache-2.0
 -->
 
@@ -32,14 +32,28 @@ Pre-built binaries are available from the [releases page](https://github.com/Arm
 ### Usage
 
 ```console
-kubearchinspect [OPTIONS]
+kubearchinspect [command] [flags]
 ```
 
-### Options
+### Commands
 
 - `images` : Check which images in your cluster support arm64
+
+  | Flag                              | Description                                                                 |
+  | --------------------------------- | --------------------------------------------------------------------------- |
+  | `-c`, `--kube-config-path string` | Path to your Kube config file. (Default: `~/.kube/config`)                  |
+  | `--kube-context string`           | The Kubernetes context to be used. (Default: Current context in the config) |
+
+- `version` : Check the version of KubeArchInspect you are running
 - `completion` : Generate the autocompletion script for the specified shell
 - `help` : Help about any command
+
+### Global Flags
+
+| Flag                 | Description       |
+| -------------------- | ----------------- |
+| `-d`, `--debug`      | Enable debug mode |
+| `-l`, `--log string` | Enable logging    |
 
 ## Example
 

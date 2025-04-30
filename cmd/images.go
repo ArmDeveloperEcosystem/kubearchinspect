@@ -41,8 +41,8 @@ var (
 
 	imagesCmd = &cobra.Command{
 		Use:   "images",
-		Short: "Check which images in your cluster support arm64.",
-		Long:  `Check which images in your cluster support arm64.`,
+		Short: "Check which images in your cluster support arm64",
+		Long:  `Check which images in your cluster support arm64`,
 		Run:   imagesCmdRun,
 	}
 )

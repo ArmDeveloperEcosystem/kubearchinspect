@@ -1,7 +1,8 @@
 <!--
-Copyright (C) 2024 Arm Limited or its affiliates and Contributors. All rights reserved.
+Copyright (C) 2025 Arm Limited or its affiliates and Contributors. All rights reserved.
 SPDX-License-Identifier: Apache-2.0
 -->
+
 # Changes directory
 
 This directory comprises information about all the changes that happened since the last release.
