@@ -2,6 +2,19 @@
 Features
 --------
 
+- Add `version` command (#29)
+- Update Kubernetes support to v1.33 as well as other Go dependencies (#30)
+
+
+Misc
+----
+
+- #20250205
+
+
+Features
+--------
+
 - Allow to run the application against a given Kube config and K8S context (#24)
 
 
