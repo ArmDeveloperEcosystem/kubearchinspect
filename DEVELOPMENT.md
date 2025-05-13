@@ -1,8 +1,10 @@
 <!--
-Copyright (C) 2024 Arm Limited or its affiliates and Contributors. All rights reserved.
+Copyright (C) 2025 Arm Limited or its affiliates and Contributors. All rights reserved.
 SPDX-License-Identifier: Apache-2.0
 -->
+
 # Development and Testing
+
 ## Local Development
 
 ### Build manually
@@ -16,6 +18,7 @@ go build
 ### Running tests
 
 To run all tests:
+
 ```bash
 go test ./...
 ```
@@ -24,6 +27,7 @@ go test ./...
 
 Static analysis tools and linters are run as part of CI.
 They come from [golangci-lint](https://golangci-lint.run/). To run this locally:
+
 ```bash
 # Must be in a directory with a go.mod file
 cd <directory_with_go_module>
@@ -32,11 +36,11 @@ golangci-lint run ./...
 
 # Releasing
 
-### Release workflow
+## Release workflow
 
 1. Navigate to the [GitHub Actions](https://github.com/ArmDeveloperEcosystem/kubearchinspect/actions/workflows/release.yml) page.
 2. Select the **Run Workflow** button.
 
-### Version Numbers
+## Version Numbers
 
-The version number will be automatically calculated, based on the news files.
+The version number will be automatically calculated, based on the news files. This information will also be displayed when running the `version` command.

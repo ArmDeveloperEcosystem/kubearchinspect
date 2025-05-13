@@ -10,18 +10,25 @@ version: 2
 
 before:
   hooks:
-    - go mod tidy
+  - go mod tidy
 
 builds:
-  - env:
-      - CGO_ENABLED=0
-    goos:
-      - linux
-      - windows
-      - darwin
-    goarch:
-      - amd64
-      - arm64
+- id: kubearchinspect
+  env:
+  - CGO_ENABLED=0
+  goos:
+  - linux
+  - windows
+  - darwin
+  goarch:
+  - amd64
+  - arm64
+  main: .
+  ldflags:
+  - -s -w
+  - -X github.com/ArmDeveloperEcosystem/kubearchinspect/cmd.version={{.Version}}
+  - -X github.com/ArmDeveloperEcosystem/kubearchinspect/cmd.commit={{.Commit}}
+  - -X github.com/ArmDeveloperEcosystem/kubearchinspect/cmd.date={{.Date}}
 
 archives:
   - formats: tar.gz
@@ -42,8 +49,8 @@ changelog:
   sort: asc
   filters:
     exclude:
-      - "^docs:"
-      - "^test:"
+    - "^docs:"
+    - "^test:"
 release:
   draft: false
   replace_existing_draft: true

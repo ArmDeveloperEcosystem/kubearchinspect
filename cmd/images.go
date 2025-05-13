@@ -1,5 +1,5 @@
 /*
-Copyright 2024 Arm Limited
+Copyright 2025 Arm Limited
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -41,8 +41,8 @@ var (
 
 	imagesCmd = &cobra.Command{
 		Use:   "images",
-		Short: "Check which images in your cluster support arm64.",
-		Long:  `Check which images in your cluster support arm64.`,
+		Short: "Check which images in your cluster support arm64",
+		Long:  `Check which images in your cluster support arm64`,
 		Run:   imagesCmdRun,
 	}
 )

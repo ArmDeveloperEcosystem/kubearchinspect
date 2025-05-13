@@ -1,0 +1,1 @@
+Add `version` command
