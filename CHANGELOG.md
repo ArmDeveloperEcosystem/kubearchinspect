@@ -2,6 +2,12 @@
 Features
 --------
 
+- Refine legend wording related to arm64 node compatibility (#31)
+
+
+Features
+--------
+
 - Add `version` command (#29)
 - Update Kubernetes support to v1.33 as well as other Go dependencies (#30)
 
