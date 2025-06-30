@@ -1,0 +1,1 @@
+Refine legend wording related to arm64 node compatibility

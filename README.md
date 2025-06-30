@@ -64,9 +64,9 @@ Output from a small cluster in EKS:
 
 Legend:
 -------
-✅ - arm64 supported
-🆙 - arm64 supported (with update)
-❌ - arm64 not supported
+✅ - arm64 node compatible
+🆙 - arm64 node compatible (after update)
+❌ - not arm64 node compatible
 🚫 - error occurred
 ------------------------------------------------------------------------------------------------
 

@@ -33,6 +33,8 @@ const (
 	errorIcon   = "\xF0\x9F\x9A\xAB"
 	failedIcon  = "\xE2\x9D\x8C"
 	upgradeIcon = "\xF0\x9F\x86\x99"
+
+	legend = "Legend:\n-------\n%s - arm64 node compatible\n%s - arm64 node compatible (after update)\n%s - not arm64 node compatible\n%s - error occurred\n%s"
 )
 
 var (
@@ -71,7 +73,7 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 	}
 
 	fmt.Printf(
-		"Legend:\n-------\n%s - arm64 supported\n%s - arm64 supported (with update)\n%s - arm64 not supported\n%s - error occurred\n%s",
+		legend,
 		successIcon,
 		upgradeIcon,
 		failedIcon,
@@ -132,7 +134,6 @@ func imagesCmdRun(_ *cobra.Command, _ []string) {
 			log.Println(res.icon, " image: ", res.image, " error: ", res.err, "\n", imageMap[res.image])
 		}
 	}
-
 }
 
 func init() {
