@@ -31,7 +31,6 @@ You do not need the kubectl, docker, podman, or skopeo CLI tools installed — o
 
 **Kubeconfig** (`~/.kube/config` or set via the `--kube-config-path` flag)  
 Required to connect to the target Kubernetes cluster.
-If multiple clusters are configured, the tool will use the default context unless specified using `--kube-context` flag.
 
 Example: For AWS EKS clusters, configure access with:
 
@@ -39,10 +38,17 @@ Example: For AWS EKS clusters, configure access with:
 aws eks update-kubeconfig --region <region> --name <cluster_name>
 ```
 
+If multiple clusters are configured in the `kubeconfig`, the tool will use the default context unless specified using `--kube-context` flag.
+
 #### Registry Authentication
 
 **Registry credentials** (`~/.docker/config.json` or `$XDG_RUNTIME_DIR/containers/auth.json`)  
-Required for accessing private container registries. The tool relies on `containers/image`, which uses the same credential configuration as:
+Required only for accessing **private container registries**.
+
+> Many organisations and teams use private registries to store their container images for security, compliance, or version control.
+> These images are not publicly accessible and require authentication.
+
+The tool relies on `containers/image`, which uses the same credential configuration as:
 
 - [`docker login`](https://docs.docker.com/reference/cli/docker/login/)
 - [`podman login`](https://docs.podman.io/en/latest/markdown/podman-login.1.html)
