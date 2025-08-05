@@ -24,10 +24,21 @@ Pre-built binaries are available from the [releases page](https://github.com/Arm
 
 ### Prerequsites
 
-- `kubectl` - `kubearchinspect` must be executed on a client with `kubectl` installed and configured to connect
-  to the target Kubernetes cluster. If multiple clusters are configured, it will query the cluster in the current
-  default context.
-- `docker` client - The Docker credential store is used to authenticate to private registries, use [`docker login`](https://docs.docker.com/reference/cli/docker/login/) to add credentials.
+This tool includes built-in kubectl and container registry support using the [containers/image](https://github.com/containers/image) library.
+You do not need the kubectl, docker, podman, or skopeo CLI tools installed — only their configuration files.
+
+#### Kubernetes Configuration
+
+**Kubeconfig** (`~/.kube/config` or set via the `--kube-config-path` flag)  
+Required to connect to the target Kubernetes cluster.
+
+Example: For AWS EKS clusters, configure access with:
+
+```shell
+aws eks update-kubeconfig --region <region> --name <cluster_name>
+```
+
+If multiple clusters are configured in the `kubeconfig`, the tool will use the default context unless specified using `--kube-context` flag.
 
 ### Usage
 
@@ -107,8 +118,28 @@ If there is an error whilst checking an image, the tool will display the 🚫 sy
 
 ## Private Registry Authentication
 
-If `kubearchinspect` discovers an image from a registry that requires authentication, it uses the `docker` credential
-store located at `~/.docker/config.json` to obtain the required credentials.
+**Registry credentials** (`~/.docker/config.json` or `$XDG_RUNTIME_DIR/containers/auth.json`)  
+Required only for accessing **private container registries**.
+
+> Many organisations and teams use private registries to store their container images for security, compliance, or version control.
+> These images are not publicly accessible and require authentication.
+
+The tool relies on `containers/image`, which uses the same credential configuration as:
+
+- [`docker login`](https://docs.docker.com/reference/cli/docker/login/)
+- [`podman login`](https://docs.podman.io/en/latest/markdown/podman-login.1.html)
+- [`skopeo login`](https://man.archlinux.org/man/extra/skopeo/skopeo-login.1.en)
+- [`buildah login`](https://manpages.ubuntu.com/manpages/jammy/man1/buildah-login.1.html)
+
+Any of these commands will populate or update the config file, which includes the necessary authentication tokens or credential store references.
+
+> Tip: You can use any of the above tools to authenticate. For example:
+
+```shell
+podman login <registry>
+```
+
+Credential helpers defined in the config file (such as `credHelpers` or `credsStore`) are also supported.
 
 ## Releases
 
