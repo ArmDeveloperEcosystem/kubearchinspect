@@ -2,6 +2,25 @@
 Features
 --------
 
+- Add `inspect` command to check arm64 support for a specific image (#37)
+- Add support for multi-architecture manifest lists (Docker manifest list and OCI image index), correctly detecting arm64 support without resolving to the host platform. (#38)
+
+
+Bugfixes
+--------
+
+- Fix incorrect arm64 detection for multi-arch images where the tool was resolving to the host platform instead of checking for an arm64 entry in the manifest list. (#38)
+
+
+Improved Documentation
+----------------------
+
+- Update README.md to clarify prerequisites regarding the kube config and container registry authentication (#32)
+
+
+Features
+--------
+
 - Refine legend wording related to arm64 node compatibility (#31)
 
 
