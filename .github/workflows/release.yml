@@ -19,18 +19,18 @@ jobs:
           private_key: ${{ secrets.OTG_PLT_DEVECO_APP_PRVT_KEY }}
 
       # Checkout with full history so commit number can be calculated for beta versions
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           token: ${{ steps.get_installation_token.outputs.token }}
           fetch-depth: 0
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: "go.mod"
 
       # Towncrier and CI tools are written in Python
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ env.python-version }}
 
@@ -57,7 +57,7 @@ jobs:
           tag: "v${{ env.SEMVER_VERSION }} -m 'Release v${{ env.SEMVER_VERSION }}'"
 
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v6
+        uses: goreleaser/goreleaser-action@v7
         with:
           distribution: goreleaser
           version: "~> v2"

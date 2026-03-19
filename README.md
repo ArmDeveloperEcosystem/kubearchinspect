@@ -48,6 +48,12 @@ kubearchinspect [command] [flags]
 
 ### Commands
 
+- `inspect <image>` : Check whether a specific container image supports arm64
+
+  ```console
+  kubearchinspect inspect nginx:latest
+  ```
+
 - `images` : Check which images in your cluster support arm64
 
   | Flag                              | Description                                                                 |

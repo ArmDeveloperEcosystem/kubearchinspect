@@ -83,7 +83,7 @@ func CheckLinuxArm64Support(imgName string) (bool, error) {
 	if err != nil {
 		return false, fmt.Errorf("error getting image source: %w", err)
 	}
-	defer src.Close()
+	defer func() { _ = src.Close() }()
 
 	img, err := image.FromUnparsedImage(context.TODO(), sys, image.UnparsedInstance(src, nil))
 	if err != nil {
