@@ -1,0 +1,1 @@
+Fix incorrect arm64 detection for multi-arch images where the tool was resolving to the host platform instead of checking for an arm64 entry in the manifest list.
