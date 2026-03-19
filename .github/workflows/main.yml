@@ -14,24 +14,24 @@ jobs:
         os: [ubuntu-latest, ubuntu-24.04-arm]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: "go.mod"
 
       - name: Install dependencies
-        run: sudo apt-get install libbtrfs-dev -y
+        run: sudo apt install libbtrfs-dev -y
 
       - name: Download Go Modules
         run: go mod download
 
       - name: Linting
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v9
         with:
           version: latest
-          args: "--print-issued-lines --print-linter-name --out-${NO_FUTURE}format colored-line-number --timeout 300s --max-issues-per-linter 0 --max-same-issues 0"
+          args: "--no-config --timeout 5m"
 
       - name: Test Go
         run: go test ./... --cover
